@@ -1,0 +1,56 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Peanuts"
+>
+<rect width="800" height="520" fill="#FFFBEB"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#F5D0A9"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#F5D0A9"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#92400E"
+>
+NUT
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Peanuts
+</text>
+
+<ellipse cx="350" cy="280" rx="75" ry="55" fill="#D97706" transform="rotate(-25 350 280)"/>
+<ellipse cx="445" cy="300" rx="75" ry="55" fill="#D97706" transform="rotate(-25 445 300)"/>
+<path d="M350 245 Q350 315 350 330" stroke="#92400E" stroke-width="7"/>
+<path d="M445 265 Q445 335 445 350" stroke="#92400E" stroke-width="7"/>
+</svg>

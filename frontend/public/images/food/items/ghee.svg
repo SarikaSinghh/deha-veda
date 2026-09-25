@@ -1,0 +1,55 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Ghee"
+>
+<rect width="800" height="520" fill="#EFF6FF"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#BFDBFE"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#BFDBFE"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#2563EB"
+>
+DAIRY
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Ghee
+</text>
+
+<rect x="315" y="190" width="170" height="180" rx="25" fill="#FACC15"/>
+<rect x="340" y="215" width="120" height="70" rx="10" fill="#FEF3C7"/>
+<text x="400" y="260" text-anchor="middle" font-family="Arial" font-size="28" font-weight="700" fill="#92400E">GHEE</text>
+</svg>

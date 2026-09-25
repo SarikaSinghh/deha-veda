@@ -1,0 +1,55 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Apple"
+>
+<rect width="800" height="520" fill="#FFF7ED"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#FED7AA"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#FED7AA"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#F97316"
+>
+FRUIT
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Apple
+</text>
+
+<circle cx="400" cy="260" r="105" fill="#EF4444"/>
+<path d="M400 158 Q390 125 415 105" stroke="#713F12" stroke-width="12" fill="none"/>
+<path d="M410 125 Q455 90 490 125 Q450 150 410 145 Z" fill="#16A34A"/>
+</svg>

@@ -1,0 +1,56 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Pumpkin Seeds"
+>
+<rect width="800" height="520" fill="#FAFAF9"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#D6D3D1"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#D6D3D1"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#57534E"
+>
+SEED
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Pumpkin Seeds
+</text>
+
+<ellipse cx="340" cy="280" rx="65" ry="30" transform="rotate(-25 340 280)" fill="#57534E"/>
+<ellipse cx="460" cy="280" rx="65" ry="30" transform="rotate(25 460 280)" fill="#78716C"/>
+<ellipse cx="400" cy="340" rx="65" ry="30" fill="#A8A29E"/>
+<ellipse cx="400" cy="220" rx="65" ry="30" fill="#D6D3D1"/>
+</svg>

@@ -1,0 +1,67 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Makhana (Fox Nut)"
+>
+<rect width="800" height="520" fill="#F5F3FF"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#DDD6FE"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#DDD6FE"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#7C3AED"
+>
+SNACK
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Makhana (Fox Nut)
+</text>
+
+<ellipse cx="400" cy="360" rx="190" ry="42" fill="#E5E7EB"/>
+<path
+d="M220 350 Q235 445 400 450 Q565 445 580 350 Z"
+fill="#7C3AED"
+opacity="0.18"
+/>
+<ellipse
+cx="400"
+cy="350"
+rx="180"
+ry="55"
+fill="#FFFFFF"
+stroke="#7C3AED"
+stroke-width="5"
+/>
+<circle cx="320" cy="300" r="45" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="5"/><circle cx="390" cy="270" r="50" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="5"/><circle cx="460" cy="305" r="45" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="5"/><circle cx="355" cy="350" r="42" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="5"/><circle cx="430" cy="360" r="45" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="5"/></svg>

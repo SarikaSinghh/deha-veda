@@ -1,0 +1,58 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Watermelon"
+>
+<rect width="800" height="520" fill="#FFF7ED"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#FED7AA"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#FED7AA"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#F97316"
+>
+FRUIT
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Watermelon
+</text>
+
+<path d="M250 330 Q400 120 550 330 Z" fill="#EF4444"/>
+<path d="M250 330 Q400 120 550 330" stroke="#15803D" stroke-width="25" fill="none"/>
+<path d="M270 330 Q400 145 530 330" stroke="#BBF7D0" stroke-width="12" fill="none"/>
+<circle cx="350" cy="275" r="7" fill="#111827"/>
+<circle cx="400" cy="230" r="7" fill="#111827"/>
+<circle cx="450" cy="275" r="7" fill="#111827"/>
+</svg>

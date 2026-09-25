@@ -12,11 +12,21 @@ import json
 import logging
 import bcrypt
 import jwt
+
 from collections import defaultdict
 from datetime import datetime, timezone, timedelta
 from typing import List, Optional, Literal
 
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request, Response, UploadFile, File
+from fastapi import (
+    FastAPI,
+    APIRouter,
+    HTTPException,
+    Depends,
+    Request,
+    Response,
+    UploadFile,
+    File,
+)
 from fastapi.responses import StreamingResponse
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -26,22 +36,81 @@ import content as C
 import chalisa as CH
 import devotional as DV
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s"
+)
+
 logger = logging.getLogger("dehaveda")
 
-client = AsyncIOMotorClient(os.environ["MONGO_URL"])
-db = client[os.environ["DB_NAME"]]
+
+# Fallbacks prevent KeyError crashes if environment variables are missing
+MONGO_URL = os.environ.get(
+    "MONGO_URL",
+    "mongodb://localhost:27017"
+)
+
+DB_NAME = os.environ.get(
+    "DB_NAME",
+    "dehaveda"
+)
+
+JWT_SECRET = os.environ.get("JWT_SECRET", "").strip()
+
+if not JWT_SECRET:
+    JWT_SECRET = "dev-only-change-this-secret"
+
+if (
+    JWT_SECRET == "dev-only-change-this-secret"
+    and os.environ.get("ENVIRONMENT", "development").lower() == "production"
+):
+    raise RuntimeError("JWT_SECRET must be set in production.")
+
+
+client = AsyncIOMotorClient(MONGO_URL)
+db = client[DB_NAME]
 
 JWT_ALGORITHM = "HS256"
-JWT_SECRET = os.environ["JWT_SECRET"]
+
 FREE_CHAT_LIMIT = 10
 PREMIUM_CHAT_LIMIT = 100
 
+
 app = FastAPI(title="Deha Veda Ecosystem API")
+
+# ----------------------------- CORS -----------------------------
+# Allows the React frontend running on localhost:3000 or
+# 127.0.0.1:3000 to communicate with the FastAPI backend.
+# Credentials are enabled because the application uses
+# authentication cookies.
+
+# CORS
+# Local development works out of the box. For production, set:
+# CORS_ORIGINS=https://your-frontend-domain.com
+# Multiple origins can be comma-separated.
+CORS_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get(
+        "CORS_ORIGINS",
+        "http://localhost:3000,http://127.0.0.1:3000",
+    ).split(",")
+    if origin.strip()
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=CORS_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 api = APIRouter(prefix="/api")
 
 NO_ID = {"_id": 0}
 
+# ----------------------------- helpers -----------------------------
 
 def now() -> datetime:
     return datetime.now(timezone.utc)
@@ -52,36 +121,69 @@ def iso(dt: datetime) -> str:
 
 
 # ----------------------------- security helpers -----------------------------
+
 def hash_password(password: str) -> str:
-    return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+    return bcrypt.hashpw(
+        password.encode("utf-8"),
+        bcrypt.gensalt()
+    ).decode("utf-8")
 
 
 def verify_password(plain: str, hashed: str) -> bool:
     try:
-        return bcrypt.checkpw(plain.encode("utf-8"), hashed.encode("utf-8"))
+        return bcrypt.checkpw(
+            plain.encode("utf-8"),
+            hashed.encode("utf-8")
+        )
     except ValueError:
         return False
 
 
-def create_token(user_id: str, email: str, kind: str = "access") -> str:
-    delta = timedelta(days=7) if kind == "refresh" else timedelta(hours=12)
-    payload = {"sub": user_id, "email": email, "exp": now() + delta, "type": kind}
-    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+def create_token(
+    user_id: str,
+    email: str,
+    kind: str = "access"
+) -> str:
+
+    delta = (
+        timedelta(days=7)
+        if kind == "refresh"
+        else timedelta(hours=12)
+    )
+
+    payload = {
+        "sub": user_id,
+        "email": email,
+        "exp": now() + delta,
+        "type": kind,
+    }
+
+    return jwt.encode(
+        payload,
+        JWT_SECRET,
+        algorithm=JWT_ALGORITHM
+    )
 
 
 def is_premium_active(user: dict) -> bool:
+
     if user.get("role") == "admin":
         return True
+
     expiry = user.get("premium_until")
+
     if not expiry:
         return False
+
     try:
         return datetime.fromisoformat(expiry) > now()
+
     except (TypeError, ValueError):
         return False
 
 
 def public_user(user: dict) -> dict:
+
     return {
         "id": user["id"],
         "name": user.get("name", ""),
@@ -94,191 +196,530 @@ def public_user(user: dict) -> dict:
 
 
 def bearer_token(request: Request) -> Optional[str]:
+
     header = request.headers.get("Authorization", "")
+
     if header.startswith("Bearer "):
         return header[7:]
+
     return request.cookies.get("access_token")
 
 
 async def get_current_user(request: Request) -> dict:
+
     token = bearer_token(request)
+
     if not token:
-        raise HTTPException(status_code=401, detail="Not authenticated")
+        raise HTTPException(
+            status_code=401,
+            detail="Not authenticated"
+        )
+
     try:
-        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        payload = jwt.decode(
+            token,
+            JWT_SECRET,
+            algorithms=[JWT_ALGORITHM]
+        )
+
     except jwt.ExpiredSignatureError:
-        raise HTTPException(status_code=401, detail="Session expired, please log in again")
+        raise HTTPException(
+            status_code=401,
+            detail="Session expired, please log in again"
+        )
+
     except jwt.InvalidTokenError:
-        raise HTTPException(status_code=401, detail="Invalid token")
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid token"
+        )
+
     if payload.get("type") != "access":
-        raise HTTPException(status_code=401, detail="Invalid token type")
-    user = await db.users.find_one({"id": payload["sub"]}, NO_ID)
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid token type"
+        )
+
+    user = await db.users.find_one(
+        {"id": payload["sub"]},
+        NO_ID
+    )
+
     if not user:
-        raise HTTPException(status_code=401, detail="User not found")
+        raise HTTPException(
+            status_code=401,
+            detail="User not found"
+        )
+
     return user
 
 
-async def get_optional_user(request: Request) -> Optional[dict]:
+async def get_optional_user(
+    request: Request
+) -> Optional[dict]:
+
     try:
         return await get_current_user(request)
+
     except HTTPException:
         return None
 
 
-async def get_admin(user: dict = Depends(get_current_user)) -> dict:
+async def get_admin(
+    user: dict = Depends(get_current_user)
+) -> dict:
+
     if user.get("role") != "admin":
-        raise HTTPException(status_code=403, detail="Admin access required")
+        raise HTTPException(
+            status_code=403,
+            detail="Admin access required"
+        )
+
     return user
 
 
 _rate_buckets: dict = defaultdict(list)
 
 
-def rate_limit(key: str, limit: int, window_seconds: int):
+def rate_limit(
+    key: str,
+    limit: int,
+    window_seconds: int
+):
+
     bucket = _rate_buckets[key]
+
     cutoff = time.time() - window_seconds
-    bucket[:] = [t for t in bucket if t > cutoff]
+
+    bucket[:] = [
+        t for t in bucket
+        if t > cutoff
+    ]
+
     if len(bucket) >= limit:
-        raise HTTPException(status_code=429, detail="Too many requests, please slow down.")
+        raise HTTPException(
+            status_code=429,
+            detail="Too many requests, please slow down."
+        )
+
     bucket.append(time.time())
 
 
 # ----------------------------- models -----------------------------
+
 class RegisterIn(BaseModel):
-    name: str = Field(min_length=2, max_length=60)
+
+    name: str = Field(
+        min_length=2,
+        max_length=60
+    )
+
     email: EmailStr
-    password: str = Field(min_length=8, max_length=128)
+
+    password: str = Field(
+        min_length=8,
+        max_length=128
+    )
 
 
 class LoginIn(BaseModel):
+
     email: EmailStr
-    password: str = Field(min_length=1, max_length=128)
+
+    password: str = Field(
+        min_length=1,
+        max_length=128
+    )
 
 
 class CalorieIn(BaseModel):
-    age: int = Field(ge=10, le=100)
+
+    age: int = Field(
+        ge=10,
+        le=100
+    )
+
     sex: Literal["male", "female"]
-    height_cm: float = Field(ge=90, le=250)
-    weight_kg: float = Field(ge=25, le=300)
-    activity: Literal["sedentary", "light", "moderate", "active", "very_active"]
-    goal: Literal["lose", "maintain", "gain"]
+
+    height_cm: float = Field(
+        ge=90,
+        le=250
+    )
+
+    weight_kg: float = Field(
+        ge=25,
+        le=300
+    )
+
+    activity: Literal[
+        "sedentary",
+        "light",
+        "moderate",
+        "active",
+        "very_active"
+    ]
+
+    goal: Literal[
+        "lose",
+        "maintain",
+        "gain"
+    ]
 
 
 class ScoreIn(BaseModel):
-    game: str = Field(min_length=2, max_length=30)
-    score: float = Field(ge=0, le=1_000_000)
-    level: int = Field(default=1, ge=0, le=999)
-    meta: dict = Field(default_factory=dict)
+
+    game: str = Field(
+        min_length=2,
+        max_length=30
+    )
+
+    score: float = Field(
+        ge=0,
+        le=1_000_000
+    )
+
+    level: int = Field(
+        default=1,
+        ge=0,
+        le=999
+    )
+
+    meta: dict = Field(
+        default_factory=dict
+    )
 
     @field_validator("game")
     @classmethod
     def known_game(cls, v):
-        codes = {g["code"] for g in C.GAMES}
+
+        codes = {
+            g["code"]
+            for g in C.GAMES
+        }
+
         if v not in codes:
-            raise ValueError("Unknown game code")
+            raise ValueError(
+                "Unknown game code"
+            )
+
         return v
 
 
 class ChatIn(BaseModel):
-    message: str = Field(min_length=1, max_length=1500)
+
+    message: str = Field(
+        min_length=1,
+        max_length=1500
+    )
+
     session_id: Optional[str] = None
 
 
 class ContactIn(BaseModel):
-    name: str = Field(min_length=2, max_length=80)
+
+    name: str = Field(
+        min_length=2,
+        max_length=80
+    )
+
     email: EmailStr
-    subject: str = Field(min_length=3, max_length=120)
-    message: str = Field(min_length=10, max_length=3000)
+
+    subject: str = Field(
+        min_length=3,
+        max_length=120
+    )
+
+    message: str = Field(
+        min_length=10,
+        max_length=3000
+    )
 
 
 class ClaimIn(BaseModel):
-    plan_code: str = Field(min_length=2, max_length=30)
-    method: Literal["qr_upi", "bank_transfer"] = "qr_upi"
-    reference: str = Field(min_length=4, max_length=60)
-    note: str = Field(default="", max_length=300)
+
+    plan_code: str = Field(
+        min_length=2,
+        max_length=30
+    )
+
+    method: Literal[
+        "qr_upi",
+        "bank_transfer"
+    ] = "qr_upi"
+
+    reference: str = Field(
+        min_length=4,
+        max_length=60
+    )
+
+    note: str = Field(
+        default="",
+        max_length=300
+    )
 
 
 class PlanUpdate(BaseModel):
-    price: Optional[float] = Field(default=None, ge=0, le=1_000_000)
-    name: Optional[str] = Field(default=None, max_length=80)
-    tagline: Optional[str] = Field(default=None, max_length=160)
-    duration_days: Optional[int] = Field(default=None, ge=0, le=3650)
+
+    price: Optional[float] = Field(
+        default=None,
+        ge=0,
+        le=1_000_000
+    )
+
+    name: Optional[str] = Field(
+        default=None,
+        max_length=80
+    )
+
+    tagline: Optional[str] = Field(
+        default=None,
+        max_length=160
+    )
+
+    duration_days: Optional[int] = Field(
+        default=None,
+        ge=0,
+        le=3650
+    )
+
     features: Optional[List[str]] = None
+
     active: Optional[bool] = None
 
 
 class FoodIn(BaseModel):
-    name: str = Field(min_length=1, max_length=80)
-    category: str = Field(min_length=2, max_length=40)
+
+    name: str = Field(
+        min_length=1,
+        max_length=80
+    )
+
+    category: str = Field(
+        min_length=2,
+        max_length=40
+    )
+
     serving_size: str = "100 g"
-    calories: float = Field(ge=0, le=1200)
-    protein_g: float = Field(ge=0, le=200)
-    carbs_g: float = Field(ge=0, le=200)
-    fat_g: float = Field(ge=0, le=200)
-    fiber_g: float = Field(ge=0, le=100)
+
+    calories: float = Field(
+        ge=0,
+        le=1200
+    )
+
+    protein_g: float = Field(
+        ge=0,
+        le=200
+    )
+
+    carbs_g: float = Field(
+        ge=0,
+        le=200
+    )
+
+    fat_g: float = Field(
+        ge=0,
+        le=200
+    )
+
+    fiber_g: float = Field(
+        ge=0,
+        le=100
+    )
+
     micronutrients: str = ""
+
     note: str = ""
+
     premium: bool = False
 
 
 class ContentIn(BaseModel):
+
     payload: dict
 
 
 # ----------------------------- startup -----------------------------
+
 @app.on_event("startup")
 async def startup():
-    await db.users.create_index("email", unique=True)
-    await db.users.create_index("id", unique=True)
-    await db.foods.create_index([("name", 1)], unique=True)
-    await db.foods.create_index("category")
-    await db.scores.create_index([("user_id", 1), ("created_at", -1)])
-    await db.chat_messages.create_index([("session_id", 1), ("created_at", 1)])
-    await db.payment_claims.create_index([("status", 1), ("created_at", -1)])
-    await db.plans.create_index("code", unique=True)
-    await db.page_views.create_index("path")
-    await db.health_reports.create_index([("user_id", 1), ("created_at", -1)])
+
+    await db.users.create_index(
+        "email",
+        unique=True
+    )
+
+    await db.users.create_index(
+        "id",
+        unique=True
+    )
+
+    await db.foods.create_index(
+        [("name", 1)],
+        unique=True
+    )
+
+    await db.foods.create_index(
+        "category"
+    )
+
+    await db.scores.create_index(
+        [("user_id", 1), ("created_at", -1)]
+    )
+
+    await db.chat_messages.create_index(
+        [("session_id", 1), ("created_at", 1)]
+    )
+
+    await db.payment_claims.create_index(
+        [("status", 1), ("created_at", -1)]
+    )
+
+    await db.plans.create_index(
+        "code",
+        unique=True
+    )
+
+    await db.page_views.create_index(
+        "path"
+    )
+
+    await db.health_reports.create_index(
+        [("user_id", 1), ("created_at", -1)]
+    )
+
     await db.settings.update_one(
         {"key": "gating"},
-        {"$setOnInsert": {"premium_gating_enabled": False, "updated_at": iso(now())}},
+        {
+            "$setOnInsert": {
+                "premium_gating_enabled": False,
+                "updated_at": iso(now()),
+            }
+        },
         upsert=True,
     )
 
+    # FIXED INDENTATION
     for plan in C.PLANS:
+
         await db.plans.update_one(
             {"code": plan["code"]},
-            {"$setOnInsert": {**plan, "created_at": iso(now())}},
+            {
+                "$setOnInsert": {
+                    **plan,
+                    "created_at": iso(now()),
+                }
+            },
             upsert=True,
         )
+
     if await db.foods.count_documents({}) == 0:
-        await db.foods.insert_many([{**f, "id": str(uuid.uuid4())} for f in C.FOODS])
 
-    admin_email = os.environ["ADMIN_EMAIL"].lower()
-    admin_password = os.environ["ADMIN_PASSWORD"]
-    existing = await db.users.find_one({"email": admin_email})
+        await db.foods.insert_many(
+            [
+                {
+                    **f,
+                    "id": str(uuid.uuid4())
+                }
+                for f in C.FOODS
+            ]
+        )
+
+    admin_email = os.environ.get(
+        "ADMIN_EMAIL",
+        "admin@example.com"
+    ).lower()
+
+    admin_password = os.environ.get(
+        "ADMIN_PASSWORD",
+        "adminpassword123"
+    )
+
+    existing = await db.users.find_one(
+        {"email": admin_email}
+    )
+
     if existing is None:
-        await db.users.insert_one({
-            "id": str(uuid.uuid4()), "name": "Deha Veda Admin", "email": admin_email,
-            "password_hash": hash_password(admin_password), "role": "admin",
-            "premium_until": None, "created_at": iso(now()),
-        })
-        logger.info("Seeded admin account %s", admin_email)
-    elif not verify_password(admin_password, existing["password_hash"]):
-        await db.users.update_one({"email": admin_email},
-                                  {"$set": {"password_hash": hash_password(admin_password)}})
 
+        await db.users.insert_one(
+            {
+                "id": str(uuid.uuid4()),
+                "name": "Deha Veda Admin",
+                "email": admin_email,
+                "password_hash": hash_password(
+                    admin_password
+                ),
+                "role": "admin",
+                "premium_until": None,
+                "created_at": iso(now()),
+            }
+        )
+
+        logger.info(
+            "Seeded admin account %s",
+            admin_email
+        )
+
+    elif not verify_password(
+        admin_password,
+        existing["password_hash"]
+    ):
+
+        await db.users.update_one(
+            {"email": admin_email},
+            {
+                "$set": {
+                    "password_hash": hash_password(
+                        admin_password
+                    )
+                }
+            }
+        )
+
+
+# ----------------------------- shutdown -----------------------------
 
 @app.on_event("shutdown")
 async def shutdown():
+
     client.close()
 
 
 # ----------------------------- auth -----------------------------
-def set_auth_cookies(response: Response, access: str, refresh: str):
-    response.set_cookie("access_token", access, httponly=True, secure=True,
-                        samesite="none", max_age=43200, path="/")
-    response.set_cookie("refresh_token", refresh, httponly=True, secure=True,
-                        samesite="none", max_age=604800, path="/")
+
+def set_auth_cookies(
+    response: Response,
+    access: str,
+    refresh: str
+):
+    # Local HTTP development works by default.
+    # Set COOKIE_SECURE=true in HTTPS production.
+    cookie_secure = os.environ.get("COOKIE_SECURE", "false").strip().lower() == "true"
+    cookie_samesite = "none" if cookie_secure else "lax"
+
+    response.set_cookie(
+        "access_token",
+        access,
+        httponly=True,
+        secure=cookie_secure,
+        samesite=cookie_samesite,
+        max_age=43200,
+        path="/",
+    )
+
+    response.set_cookie(
+        "refresh_token",
+        refresh,
+        httponly=True,
+        secure=cookie_secure,
+        samesite=cookie_samesite,
+        max_age=604800,
+        path="/",
+    )
+
+
+@app.get("/health")
+async def health():
+    return {"status": "ok", "service": "deha-veda-backend"}
 
 
 @api.get("/")
@@ -1218,11 +1659,5 @@ async def put_editable_content(key: str, body: ContentIn, admin: dict = Depends(
     return {"key": key, "payload": body.payload}
 
 
+# Register all /api routes.
 app.include_router(api)
-app.add_middleware(
-    CORSMiddleware,
-    allow_credentials=True,
-    allow_origins=os.environ.get("CORS_ORIGINS", "*").split(","),
-    allow_methods=["*"],
-    allow_headers=["*"],
-)

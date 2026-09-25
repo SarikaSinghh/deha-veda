@@ -1,0 +1,62 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Bottle Gourd"
+>
+<rect width="800" height="520" fill="#F0FDF4"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#BBF7D0"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#BBF7D0"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#16A34A"
+>
+VEGETABLE
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Bottle Gourd
+</text>
+
+<path
+d="M400 155
+C330 170 350 235 375 265
+C300 300 310 395 400 405
+C490 395 500 300 425 265
+C450 235 470 170 400 155 Z"
+fill="#86EFAC"
+stroke="#15803D"
+stroke-width="7"
+/>
+</svg>

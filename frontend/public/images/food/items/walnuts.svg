@@ -1,0 +1,55 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Walnuts"
+>
+<rect width="800" height="520" fill="#FFFBEB"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#F5D0A9"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#F5D0A9"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#92400E"
+>
+NUT
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Walnuts
+</text>
+
+<path d="M310 275 Q320 190 400 205 Q480 190 490 275 Q475 370 400 390 Q325 370 310 275 Z"
+fill="#92400E"/>
+<path d="M400 210 Q370 270 400 385" stroke="#F5D0A9" stroke-width="10" fill="none"/>
+</svg>

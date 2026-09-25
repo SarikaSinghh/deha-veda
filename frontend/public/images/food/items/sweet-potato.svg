@@ -1,0 +1,61 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Sweet Potato"
+>
+<rect width="800" height="520" fill="#F0FDF4"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#BBF7D0"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#BBF7D0"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#16A34A"
+>
+VEGETABLE
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Sweet Potato
+</text>
+
+<ellipse
+cx="400"
+cy="285"
+rx="120"
+ry="80"
+transform="rotate(-15 400 285)"
+fill="#C2410C"
+/>
+<path d="M320 265 Q400 220 490 270" stroke="#FB923C" stroke-width="8" fill="none"/>
+</svg>

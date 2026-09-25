@@ -1,328 +1,1106 @@
 import { useEffect, useMemo, useState } from "react";
-import { Search, Flame, Info } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { api, apiError, GALLERIES, foodImage } from "@/lib/api";
-import { AutoCarousel } from "@/components/AutoCarousel";
-import { ErrorState, Loading, EmptyState, PremiumLock, SectionHeading, Reveal } from "@/components/States";
-import { Seo } from "@/components/Seo";
+import {
+  Apple,
+  Calculator,
+  ChevronDown,
+  Clock3,
+  Flame,
+  Leaf,
+  Search,
+  Sparkles,
+  Utensils,
+} from "lucide-react";
 
-const ACTIVITY = [
-  ["sedentary", "Sedentary — little or no exercise"],
-  ["light", "Light — exercise 1-3 days a week"],
-  ["moderate", "Moderate — exercise 3-5 days a week"],
-  ["active", "Active — exercise 6-7 days a week"],
-  ["very_active", "Very active — physical job or twice-daily training"],
-];
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
 
-function Macro({ label, value, unit }) {
+import {
+  api,
+  apiError,
+  GALLERIES,
+  foodImage,
+} from "../lib/api";
+
+
+// =========================================================
+// FOOD IMAGE
+// =========================================================
+
+function FoodImage({ name, category, imageUrl }) {
+  const fallback = foodImage(category);
+
   return (
-    <div className="rounded-xl bg-white px-3 py-2.5">
-      <p className="font-data text-[9px] uppercase tracking-[0.16em] text-slate-500">{label}</p>
-      <p className="font-data mt-1 text-sm text-slate-800">
-        {value}
-        <span className="text-[10px] text-slate-500">{unit}</span>
-      </p>
-    </div>
+    <img
+      src={imageUrl || fallback}
+      alt={`${name} — ${category}`}
+      loading="lazy"
+      onError={(e) => {
+        if (e.currentTarget.src !== fallback) {
+          e.currentTarget.src = fallback;
+        }
+      }}
+      className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+    />
   );
 }
 
-function CalorieCalculator() {
-  const [form, setForm] = useState({
-    age: 30, sex: "male", height_cm: 170, weight_kg: 65, activity: "moderate", goal: "maintain",
-  });
-  const [result, setResult] = useState(null);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState("");
 
-  const submit = async (e) => {
-    e.preventDefault();
-    setBusy(true);
-    setError("");
-    try {
-      const { data } = await api.post("/tools/calorie", {
-        ...form,
-        age: Number(form.age),
-        height_cm: Number(form.height_cm),
-        weight_kg: Number(form.weight_kg),
-      });
-      setResult(data);
-    } catch (err) {
-      setError(apiError(err, "Calculation failed. Please check your inputs."));
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
-
-  return (
-    <div id="calculator" className="grid gap-8 lg:grid-cols-2">
-      <form onSubmit={submit} data-testid="calorie-form" className="dv-surface rounded-3xl p-7">
-        <div className="grid gap-4 sm:grid-cols-2">
-          <label className="text-xs text-slate-600">
-            Age (years)
-            <Input data-testid="calorie-age" type="number" min="10" max="100" value={form.age} onChange={set("age")} className="mt-2 bg-white" required />
-          </label>
-          <label className="text-xs text-slate-600">
-            Sex
-            <select data-testid="calorie-sex" value={form.sex} onChange={set("sex")} className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800">
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-          </label>
-          <label className="text-xs text-slate-600">
-            Height (cm)
-            <Input data-testid="calorie-height" type="number" min="90" max="250" value={form.height_cm} onChange={set("height_cm")} className="mt-2 bg-white" required />
-          </label>
-          <label className="text-xs text-slate-600">
-            Weight (kg)
-            <Input data-testid="calorie-weight" type="number" min="25" max="300" value={form.weight_kg} onChange={set("weight_kg")} className="mt-2 bg-white" required />
-          </label>
-          <label className="text-xs text-slate-600 sm:col-span-2">
-            Activity level
-            <select data-testid="calorie-activity" value={form.activity} onChange={set("activity")} className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800">
-              {ACTIVITY.map(([v, l]) => (
-                <option key={v} value={v}>{l}</option>
-              ))}
-            </select>
-          </label>
-          <label className="text-xs text-slate-600 sm:col-span-2">
-            Goal
-            <select data-testid="calorie-goal" value={form.goal} onChange={set("goal")} className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800">
-              <option value="lose">Lose weight gradually</option>
-              <option value="maintain">Maintain weight</option>
-              <option value="gain">Gain weight gradually</option>
-            </select>
-          </label>
-        </div>
-        <Button data-testid="calorie-submit" type="submit" disabled={busy} className="mt-6 w-full rounded-full bg-emerald-600 text-white hover:bg-emerald-700">
-          {busy ? "Calculating…" : "Calculate my estimate"}
-        </Button>
-        {error && <p data-testid="calorie-error" className="mt-4 text-xs text-red-600">{error}</p>}
-      </form>
-
-      <div className="dv-surface rounded-3xl p-7">
-        {result ? (
-          <div data-testid="calorie-result">
-            <p className="font-data text-[10px] uppercase tracking-[0.2em] text-emerald-600">Your estimate</p>
-            <div className="mt-6 grid grid-cols-2 gap-4">
-              <div>
-                <p className="font-display text-4xl font-bold text-slate-900" data-testid="calorie-bmr">{result.bmr}</p>
-                <p className="font-data mt-1 text-[10px] uppercase tracking-[0.16em] text-slate-500">BMR kcal/day</p>
-              </div>
-              <div>
-                <p className="font-display text-4xl font-bold text-emerald-700" data-testid="calorie-maintenance">{result.maintenance}</p>
-                <p className="font-data mt-1 text-[10px] uppercase tracking-[0.16em] text-slate-500">Maintenance kcal/day</p>
-              </div>
-            </div>
-            <div className="mt-7 space-y-3">
-              <div className="rounded-xl bg-white p-4">
-                <p className="text-xs text-slate-600">{result.goal_label} range</p>
-                <p className="font-data mt-1 text-lg text-sky-700" data-testid="calorie-goal-range">
-                  {result.goal_range[0]} – {result.goal_range[1]} kcal/day
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <Macro label="BMI" value={result.bmi} unit=" kg/m²" />
-                <Macro label="Protein guide" value={`${result.protein_g_range[0]}–${result.protein_g_range[1]}`} unit=" g/day" />
-              </div>
-            </div>
-            <p className="mt-6 flex gap-2 text-[11px] leading-relaxed text-amber-700">
-              <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" /> {result.disclaimer}
-            </p>
-            <p className="font-data mt-3 text-[10px] text-slate-400">{result.formula}</p>
-          </div>
-        ) : (
-          <div className="flex h-full flex-col justify-center">
-            <Flame className="mb-4 h-6 w-6 text-amber-600" />
-            <p className="font-display text-xl text-slate-800">Your estimate appears here</p>
-            <p className="mt-3 text-sm text-slate-500">
-              Fill in the form to see basal metabolic rate, maintenance calories and a goal-based range. All figures
-              are estimates, not medical advice.
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+// =========================================================
+// AHARA PAGE
+// =========================================================
 
 export default function Ahara() {
-  const [q, setQ] = useState("");
-  const [category, setCategory] = useState("All");
-  const [categories, setCategories] = useState([]);
-  const [data, setData] = useState(null);
+  const [foods, setFoods] = useState([]);
+  const [categories, setCategories] = useState(["All"]);
+
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [search, setSearch] = useState("");
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const [selectedFood, setSelectedFood] = useState(null);
+
+  const [calorieForm, setCalorieForm] = useState({
+    age: "",
+    weight: "",
+    height: "",
+    gender: "female",
+    activity: "moderate",
+  });
+
+  const [calorieResult, setCalorieResult] = useState(null);
+  const [calorieLoading, setCalorieLoading] = useState(false);
+  const [calorieError, setCalorieError] = useState("");
+
+  // =======================================================
+  // LOAD CATEGORIES
+  // =======================================================
+
   useEffect(() => {
-    api.get("/foods/categories").then(({ data: d }) => setCategories(["All", ...d.categories])).catch(() => {});
+    let mounted = true;
+
+    async function loadCategories() {
+      try {
+        const response = await api.get("/foods/categories");
+
+        if (!mounted) return;
+
+        const list = response.data?.categories || [];
+
+        setCategories(["All", ...list]);
+      } catch (err) {
+        if (!mounted) return;
+
+        setCategories(["All"]);
+      }
+    }
+
+    loadCategories();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
-  const load = async (search = q, cat = category) => {
-    setLoading(true);
-    setError("");
-    try {
-      const { data: d } = await api.get("/foods", { params: { q: search, category: cat } });
-      setData(d);
-    } catch (err) {
-      setError(apiError(err, "Food information could not be loaded. Please try again."));
-    } finally {
-      setLoading(false);
-    }
-  };
+
+  // =======================================================
+  // LOAD FOODS
+  // =======================================================
 
   useEffect(() => {
-    const t = setTimeout(() => load(q, category), 250);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [q, category]);
+    let mounted = true;
 
-  const items = useMemo(() => data?.items || [], [data]);
+    async function loadFoods() {
+      setLoading(true);
+      setError("");
+
+      try {
+        const response = await api.get("/foods", {
+          params: {
+            q: search.trim(),
+            category:
+              selectedCategory === "All"
+                ? ""
+                : selectedCategory,
+          },
+        });
+
+        if (!mounted) return;
+
+        setFoods(response.data?.items || []);
+      } catch (err) {
+        if (!mounted) return;
+
+        setFoods([]);
+        setError(
+          apiError(
+            err,
+            "Unable to load food information."
+          )
+        );
+      } finally {
+        if (mounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    const timer = setTimeout(loadFoods, 250);
+
+    return () => {
+      mounted = false;
+      clearTimeout(timer);
+    };
+  }, [search, selectedCategory]);
+
+
+  // =======================================================
+  // FILTERED FOODS
+  // =======================================================
+
+  const visibleFoods = useMemo(() => {
+    return foods;
+  }, [foods]);
+
+
+  // =======================================================
+  // CALORIE CALCULATOR
+  // =======================================================
+
+  const handleCalorieChange = (field, value) => {
+    setCalorieForm((previous) => ({
+      ...previous,
+      [field]: value,
+    }));
+  };
+
+
+  async function calculateCalories(event) {
+    event.preventDefault();
+
+    setCalorieLoading(true);
+    setCalorieError("");
+    setCalorieResult(null);
+
+    try {
+      const response = await api.post(
+        "/tools/calorie",
+        {
+          age: Number(calorieForm.age),
+          weight: Number(calorieForm.weight),
+          height: Number(calorieForm.height),
+          gender: calorieForm.gender,
+          activity: calorieForm.activity,
+        }
+      );
+
+      setCalorieResult(response.data);
+    } catch (err) {
+      setCalorieError(
+        apiError(
+          err,
+          "Unable to calculate calories."
+        )
+      );
+    } finally {
+      setCalorieLoading(false);
+    }
+  }
+
+
+  // =======================================================
+  // RENDER
+  // =======================================================
 
   return (
-    <>
-      <Seo title="Ahara — Food & Nutrition" description="Search a curated food database with calories, macros and key micronutrients, and estimate your daily calorie needs." path="/ahara" />
+    <div className="min-h-screen bg-background">
 
-      <header className="dv-aurora border-b border-slate-200">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 lg:grid-cols-12 lg:px-8 lg:py-20">
-          <div className="lg:col-span-7">
-            <p className="font-data mb-4 text-[11px] uppercase tracking-[0.3em] text-amber-600">01 — Ahara</p>
-            <h1 className="font-display text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-              Food &amp; Nutrition
+      {/* =================================================
+          HERO
+      ================================================= */}
+
+      <section className="relative overflow-hidden border-b">
+
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-background to-amber-50 dark:from-emerald-950/20 dark:via-background dark:to-amber-950/10" />
+
+        <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+
+          <div className="max-w-3xl">
+
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border bg-background/80 px-4 py-2 text-sm font-medium backdrop-blur">
+
+              <Leaf className="h-4 w-4 text-emerald-600" />
+
+              Ahara • Nourishment
+
+            </div>
+
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+
+              Food that supports
+              <span className="text-emerald-600">
+                {" "}your well-being.
+              </span>
+
             </h1>
-            <p className="mt-6 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
-              Understand what you eat in simple terms. Values are per 100 g edible portion (or 100 ml for liquids)
-              and are drawn from USDA FoodData Central and Indian food composition references.
+
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">
+
+              Explore nutritional information for everyday Indian foods
+              and make more informed choices for your daily nourishment.
+
             </p>
+
           </div>
-          <div className="grid grid-cols-2 gap-3 lg:col-span-5">
-            {GALLERIES.ahara.slice(0, 4).map((g) => (
-              <img
-                key={g.url}
-                src={g.url}
-                alt={g.alt}
-                loading="lazy"
-                className="h-32 w-full rounded-2xl border border-slate-200 object-cover shadow-sm sm:h-36"
+
+        </div>
+
+      </section>
+
+
+      {/* =================================================
+          MAIN CONTENT
+      ================================================= */}
+
+      <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+
+        {/* =================================================
+            SEARCH + CATEGORIES
+        ================================================= */}
+
+        <section className="mb-10">
+
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+
+            {/* SEARCH */}
+
+            <div className="relative w-full lg:max-w-md">
+
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+
+              <Input
+                value={search}
+                onChange={(event) =>
+                  setSearch(event.target.value)
+                }
+                placeholder="Search foods..."
+                className="pl-10"
               />
-            ))}
-          </div>
-        </div>
-      </header>
 
-      <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
-        <SectionHeading eyebrow="Food Database" title="Search any food" subtitle="Type a name such as Apple, or browse by category." />
+            </div>
 
-        <div className="mt-8 flex flex-col gap-4">
-          <div className="relative max-w-md">
-            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
-            <Input
-              data-testid="food-search-input"
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              placeholder="Search foods…"
-              className="rounded-full border-slate-300 bg-white pl-11"
-            />
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {categories.map((c) => (
-              <button
-                key={c}
-                data-testid={`food-category-${c.toLowerCase().replace(/\W+/g, "-")}`}
-                onClick={() => setCategory(c)}
-                className={`rounded-full border px-3.5 py-1.5 text-xs transition-colors ${
-                  category === c
-                    ? "border-amber-500/60 bg-amber-600/12 text-amber-700"
-                    : "border-slate-300 text-slate-600 hover:text-slate-800"
-                }`}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
-        </div>
 
-        <div className="mt-10">
-          {loading && <Loading label="Loading food information…" />}
-          {!loading && error && <ErrorState message={error} onRetry={() => load()} />}
-          {!loading && !error && items.length === 0 && <EmptyState message={`No foods matched "${q}". Try a different name.`} />}
-          {!loading && !error && items.length > 0 && (
-            <>
-              {data.locked_count > 0 && (
-                <p data-testid="food-locked-notice" className="mb-6 rounded-2xl border border-amber-500/25 bg-amber-600/5 px-5 py-3.5 text-xs text-amber-700">
-                  {data.locked_count} of {data.total} entries are part of Premium membership.
-                </p>
-              )}
-              <div data-testid="food-grid" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {items.map((f, i) =>
-                  f.locked ? (
-                    <PremiumLock key={f.id} title={f.name} testid={`food-locked-${f.id}`} />
-                  ) : (
-                    <Reveal key={f.id} delay={Math.min(i, 8) * 40}>
-                      <article data-testid={`food-card-${f.name.toLowerCase().replace(/\W+/g, "-")}`} className="dv-surface h-full overflow-hidden rounded-2xl">
-                        <div className="relative h-36 overflow-hidden border-b border-slate-200">
-                          <img
-                            src={foodImage(f.category)}
-                            alt={`${f.category} foods including ${f.name}`}
-                            loading="lazy"
-                            className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
-                          />
-                          <span
-                            data-testid={`food-calories-${f.name.toLowerCase().replace(/\W+/g, "-")}`}
-                            className="font-data absolute right-3 top-3 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold text-emerald-700 shadow"
-                          >
-                            {f.calories} kcal
-                          </span>
-                        </div>
-                        <div className="p-6">
-                        <div className="flex items-start justify-between gap-3">
-                          <div>
-                            <h3 className="font-display text-xl font-semibold text-slate-900">{f.name}</h3>
-                            <p className="mt-1 text-[11px] text-amber-600">{f.category}</p>
-                          </div>
-                          <div className="text-right">
-                            <p className="font-data text-2xl text-emerald-700">{f.calories}</p>
-                            <p className="font-data text-[9px] uppercase tracking-[0.14em] text-slate-500">kcal</p>
-                          </div>
-                        </div>
-                        <p className="font-data mt-4 text-[10px] uppercase tracking-[0.14em] text-slate-400">{f.serving_size}</p>
-                        <div className="mt-4 grid grid-cols-2 gap-2.5">
-                          <Macro label="Protein" value={f.protein_g} unit=" g" />
-                          <Macro label="Carbs" value={f.carbs_g} unit=" g" />
-                          <Macro label="Fat" value={f.fat_g} unit=" g" />
-                          <Macro label="Fibre" value={f.fiber_g} unit=" g" />
-                        </div>
-                        {f.micronutrients && (
-                          <p className="mt-4 text-xs text-sky-700">{f.micronutrients}</p>
-                        )}
-                        {f.note && <p className="mt-3 text-xs leading-relaxed text-slate-600">{f.note}</p>}
-                        </div>
-                      </article>
-                    </Reveal>
-                  ),
-                )}
-              </div>
-            </>
+            {/* CATEGORY */}
+
+            <div className="flex flex-wrap gap-2">
+
+              {categories.map((category) => (
+
+                <Button
+                  key={category}
+                  variant={
+                    selectedCategory === category
+                      ? "default"
+                      : "outline"
+                  }
+                  size="sm"
+                  onClick={() =>
+                    setSelectedCategory(category)
+                  }
+                >
+                  {category}
+                </Button>
+
+              ))}
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        {/* =================================================
+            FOOD GRID
+        ================================================= */}
+
+        <section>
+
+          <div className="mb-5 flex items-center justify-between">
+
+            <div>
+
+              <h2 className="text-2xl font-semibold">
+                Explore foods
+              </h2>
+
+              <p className="mt-1 text-sm text-muted-foreground">
+                {visibleFoods.length} foods available
+              </p>
+
+            </div>
+
+            <div className="hidden items-center gap-2 text-sm text-muted-foreground sm:flex">
+
+              <Apple className="h-4 w-4" />
+
+              Nutritional guide
+
+            </div>
+
+          </div>
+
+
+          {error && (
+            <div className="mb-6 rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
+              {error}
+            </div>
           )}
-        </div>
-      </section>
 
-      <section className="border-y border-slate-200 bg-[#F6F5F1]">
-        <div className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
-          <SectionHeading eyebrow="Tool" title="Calorie calculator" subtitle="Mifflin-St Jeor equation with standard activity multipliers." />
-          <div className="mt-10">
-            <CalorieCalculator />
+
+          {loading ? (
+
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+              {Array.from({ length: 8 }).map((_, index) => (
+
+                <div
+                  key={index}
+                  className="overflow-hidden rounded-2xl border bg-card"
+                >
+
+                  <div className="aspect-[4/3] animate-pulse bg-muted" />
+
+                  <div className="space-y-3 p-5">
+
+                    <div className="h-5 w-2/3 animate-pulse rounded bg-muted" />
+
+                    <div className="h-4 w-1/2 animate-pulse rounded bg-muted" />
+
+                    <div className="h-4 w-full animate-pulse rounded bg-muted" />
+
+                  </div>
+
+                </div>
+
+              ))}
+
+            </div>
+
+          ) : visibleFoods.length === 0 ? (
+
+            <div className="rounded-2xl border bg-card p-12 text-center">
+
+              <Utensils className="mx-auto h-10 w-10 text-muted-foreground" />
+
+              <h3 className="mt-4 text-lg font-semibold">
+                No foods found
+              </h3>
+
+              <p className="mt-2 text-sm text-muted-foreground">
+                Try a different food name or category.
+              </p>
+
+            </div>
+
+          ) : (
+
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+              {visibleFoods.map((food) => (
+
+                <article
+                  key={food.id}
+                  className="group overflow-hidden rounded-2xl border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                >
+
+                  {/* IMAGE */}
+
+                  <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+
+                    <FoodImage
+                      name={food.name}
+                      category={food.category}
+                      imageUrl={food.image_url}
+                    />
+
+
+                    {/* CATEGORY */}
+
+                    <div className="absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-xs font-medium shadow-sm backdrop-blur">
+
+                      {food.category}
+
+                    </div>
+
+
+                    {/* PREMIUM */}
+
+                    {food.premium && (
+
+                      <div className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-background/90 px-3 py-1 text-xs font-medium shadow-sm backdrop-blur">
+
+                        <Sparkles className="h-3 w-3" />
+
+                        Premium
+
+                      </div>
+
+                    )}
+
+                  </div>
+
+
+                  {/* CONTENT */}
+
+                  <div className="p-5">
+
+                    <div className="mb-3 flex items-start justify-between gap-3">
+
+                      <h3 className="font-semibold leading-tight">
+                        {food.name}
+                      </h3>
+
+                      {food.locked && (
+
+                        <span className="shrink-0 text-xs text-muted-foreground">
+                          Locked
+                        </span>
+
+                      )}
+
+                    </div>
+
+
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+
+                      <div className="rounded-lg bg-muted/60 p-2">
+
+                        <div className="text-muted-foreground">
+                          Calories
+                        </div>
+
+                        <div className="mt-1 font-semibold">
+                          {food.calories ?? "—"} kcal
+                        </div>
+
+                      </div>
+
+
+                      <div className="rounded-lg bg-muted/60 p-2">
+
+                        <div className="text-muted-foreground">
+                          Protein
+                        </div>
+
+                        <div className="mt-1 font-semibold">
+                          {food.protein_g ?? "—"} g
+                        </div>
+
+                      </div>
+
+                    </div>
+
+
+                    {!food.locked && (
+
+                      <Button
+                        variant="ghost"
+                        className="mt-4 w-full"
+                        onClick={() =>
+                          setSelectedFood(food)
+                        }
+                      >
+                        View details
+                      </Button>
+
+                    )}
+
+                  </div>
+
+                </article>
+
+              ))}
+
+            </div>
+
+          )}
+
+        </section>
+
+
+        {/* =================================================
+            CALORIE CALCULATOR
+        ================================================= */}
+
+        <section className="mt-16">
+
+          <div className="mb-6">
+
+            <div className="mb-2 inline-flex items-center gap-2 rounded-full border bg-muted/40 px-3 py-1 text-xs font-medium">
+
+              <Calculator className="h-3.5 w-3.5" />
+
+              Personal tool
+
+            </div>
+
+            <h2 className="text-2xl font-semibold">
+              Daily calorie calculator
+            </h2>
+
+            <p className="mt-1 text-sm text-muted-foreground">
+              Estimate your daily calorie needs based on your profile.
+            </p>
+
           </div>
-        </div>
-      </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
-        <SectionHeading eyebrow="Gallery" title="Food, as it actually looks" />
-        <div className="mt-10">
-          <AutoCarousel slides={GALLERIES.ahara} testid="ahara-gallery" interval={5500} />
+
+          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+
+            {/* FORM */}
+
+            <form
+              onSubmit={calculateCalories}
+              className="rounded-2xl border bg-card p-6 shadow-sm"
+            >
+
+              <div className="grid gap-5 sm:grid-cols-2">
+
+                {/* AGE */}
+
+                <div>
+
+                  <label className="mb-2 block text-sm font-medium">
+                    Age
+                  </label>
+
+                  <Input
+                    type="number"
+                    min="1"
+                    value={calorieForm.age}
+                    onChange={(event) =>
+                      handleCalorieChange(
+                        "age",
+                        event.target.value
+                      )
+                    }
+                    placeholder="Age"
+                    required
+                  />
+
+                </div>
+
+
+                {/* GENDER */}
+
+                <div>
+
+                  <label className="mb-2 block text-sm font-medium">
+                    Gender
+                  </label>
+
+                  <select
+                    value={calorieForm.gender}
+                    onChange={(event) =>
+                      handleCalorieChange(
+                        "gender",
+                        event.target.value
+                      )
+                    }
+                    className="h-10 w-full rounded-md border bg-background px-3 text-sm"
+                  >
+
+                    <option value="female">
+                      Female
+                    </option>
+
+                    <option value="male">
+                      Male
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                {/* WEIGHT */}
+
+                <div>
+
+                  <label className="mb-2 block text-sm font-medium">
+                    Weight (kg)
+                  </label>
+
+                  <Input
+                    type="number"
+                    min="1"
+                    step="0.1"
+                    value={calorieForm.weight}
+                    onChange={(event) =>
+                      handleCalorieChange(
+                        "weight",
+                        event.target.value
+                      )
+                    }
+                    placeholder="Weight"
+                    required
+                  />
+
+                </div>
+
+
+                {/* HEIGHT */}
+
+                <div>
+
+                  <label className="mb-2 block text-sm font-medium">
+                    Height (cm)
+                  </label>
+
+                  <Input
+                    type="number"
+                    min="1"
+                    step="0.1"
+                    value={calorieForm.height}
+                    onChange={(event) =>
+                      handleCalorieChange(
+                        "height",
+                        event.target.value
+                      )
+                    }
+                    placeholder="Height"
+                    required
+                  />
+
+                </div>
+
+
+                {/* ACTIVITY */}
+
+                <div className="sm:col-span-2">
+
+                  <label className="mb-2 block text-sm font-medium">
+                    Activity level
+                  </label>
+
+                  <select
+                    value={calorieForm.activity}
+                    onChange={(event) =>
+                      handleCalorieChange(
+                        "activity",
+                        event.target.value
+                      )
+                    }
+                    className="h-10 w-full rounded-md border bg-background px-3 text-sm"
+                  >
+
+                    <option value="sedentary">
+                      Sedentary
+                    </option>
+
+                    <option value="light">
+                      Lightly active
+                    </option>
+
+                    <option value="moderate">
+                      Moderately active
+                    </option>
+
+                    <option value="active">
+                      Very active
+                    </option>
+
+                    <option value="very_active">
+                      Extremely active
+                    </option>
+
+                  </select>
+
+                </div>
+
+              </div>
+
+
+              {calorieError && (
+
+                <div className="mt-5 rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
+                  {calorieError}
+                </div>
+
+              )}
+
+
+              <Button
+                type="submit"
+                className="mt-6 w-full"
+                disabled={calorieLoading}
+              >
+
+                <Calculator className="mr-2 h-4 w-4" />
+
+                {calorieLoading
+                  ? "Calculating..."
+                  : "Calculate calories"}
+
+              </Button>
+
+            </form>
+
+
+            {/* RESULT */}
+
+            <div className="rounded-2xl border bg-gradient-to-br from-emerald-50 to-amber-50 p-6 dark:from-emerald-950/20 dark:to-amber-950/10">
+
+              {calorieResult ? (
+
+                <div>
+
+                  <div className="mb-6 flex items-center gap-3">
+
+                    <div className="rounded-xl bg-background p-3 shadow-sm">
+
+                      <Flame className="h-6 w-6 text-orange-500" />
+
+                    </div>
+
+                    <div>
+
+                      <h3 className="font-semibold">
+                        Your estimate
+                      </h3>
+
+                      <p className="text-sm text-muted-foreground">
+                        Daily energy requirement
+                      </p>
+
+                    </div>
+
+                  </div>
+
+
+                  <div className="rounded-2xl border bg-background/80 p-6 text-center">
+
+                    <div className="text-4xl font-bold">
+                      {calorieResult.calories ??
+                        calorieResult.tdee ??
+                        calorieResult.daily_calories ??
+                        "—"}
+                    </div>
+
+                    <div className="mt-1 text-sm text-muted-foreground">
+                      kcal / day
+                    </div>
+
+                  </div>
+
+
+                  <p className="mt-5 text-sm leading-6 text-muted-foreground">
+                    This is an estimate intended for general
+                    informational use.
+                  </p>
+
+                </div>
+
+              ) : (
+
+                <div className="flex h-full min-h-[300px] flex-col items-center justify-center text-center">
+
+                  <div className="rounded-2xl bg-background p-4 shadow-sm">
+
+                    <Flame className="h-8 w-8 text-orange-500" />
+
+                  </div>
+
+                  <h3 className="mt-5 text-lg font-semibold">
+                    Your calorie estimate will appear here
+                  </h3>
+
+                  <p className="mt-2 max-w-sm text-sm leading-6 text-muted-foreground">
+                    Enter your details and activity level to
+                    calculate an estimated daily requirement.
+                  </p>
+
+                </div>
+
+              )}
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        {/* =================================================
+            AHARA GALLERY
+        ================================================= */}
+
+        {GALLERIES?.ahara && (
+
+          <section className="mt-16">
+
+            <div className="mb-6">
+
+              <div className="mb-2 inline-flex items-center gap-2 rounded-full border bg-muted/40 px-3 py-1 text-xs font-medium">
+
+                <Sparkles className="h-3.5 w-3.5" />
+
+                Ahara
+
+              </div>
+
+              <h2 className="text-2xl font-semibold">
+                Nourishment in practice
+              </h2>
+
+            </div>
+
+
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+              {GALLERIES.ahara.map((image, index) => {
+
+                const imageSrc =
+                  typeof image === "string"
+                    ? image
+                    : image?.url ||
+                      image?.image ||
+                      image?.src;
+
+                return (
+
+                  <div
+                    key={index}
+                    className="overflow-hidden rounded-2xl border bg-card"
+                  >
+
+                    <img
+                      src={imageSrc}
+                      alt={
+                        typeof image === "object"
+                          ? image?.alt || "Ahara"
+                          : "Ahara"
+                      }
+                      loading="lazy"
+                      className="aspect-[4/3] h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                    />
+
+                  </div>
+
+                );
+
+              })}
+
+            </div>
+
+          </section>
+
+        )}
+
+      </main>
+
+
+      {/* =================================================
+          FOOD DETAILS MODAL
+      ================================================= */}
+
+      {selectedFood && (
+
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+          onClick={() => setSelectedFood(null)}
+        >
+
+          <div
+            className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border bg-background shadow-2xl"
+            onClick={(event) =>
+              event.stopPropagation()
+            }
+          >
+
+            {/* IMAGE */}
+
+            <div className="relative aspect-[16/8] overflow-hidden">
+
+              <FoodImage
+                name={selectedFood.name}
+                category={selectedFood.category}
+                imageUrl={selectedFood.image_url}
+              />
+
+              <button
+                type="button"
+                onClick={() =>
+                  setSelectedFood(null)
+                }
+                className="absolute right-4 top-4 rounded-full bg-background/90 px-3 py-2 text-sm font-medium shadow"
+              >
+                Close
+              </button>
+
+            </div>
+
+
+            {/* DETAILS */}
+
+            <div className="p-6">
+
+              <div className="flex items-start justify-between gap-4">
+
+                <div>
+
+                  <div className="mb-2 text-xs font-medium text-emerald-600">
+                    {selectedFood.category}
+                  </div>
+
+                  <h2 className="text-2xl font-bold">
+                    {selectedFood.name}
+                  </h2>
+
+                </div>
+
+                <div className="rounded-xl bg-muted px-3 py-2 text-center">
+
+                  <div className="text-lg font-bold">
+                    {selectedFood.calories ?? "—"}
+                  </div>
+
+                  <div className="text-xs text-muted-foreground">
+                    kcal
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              {/* MACROS */}
+
+              <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+
+                <div className="rounded-xl border p-4">
+
+                  <div className="text-xs text-muted-foreground">
+                    Protein
+                  </div>
+
+                  <div className="mt-1 font-semibold">
+                    {selectedFood.protein_g ?? "—"} g
+                  </div>
+
+                </div>
+
+
+                <div className="rounded-xl border p-4">
+
+                  <div className="text-xs text-muted-foreground">
+                    Carbs
+                  </div>
+
+                  <div className="mt-1 font-semibold">
+                    {selectedFood.carbs_g ?? "—"} g
+                  </div>
+
+                </div>
+
+
+                <div className="rounded-xl border p-4">
+
+                  <div className="text-xs text-muted-foreground">
+                    Fat
+                  </div>
+
+                  <div className="mt-1 font-semibold">
+                    {selectedFood.fat_g ?? "—"} g
+                  </div>
+
+                </div>
+
+
+                <div className="rounded-xl border p-4">
+
+                  <div className="text-xs text-muted-foreground">
+                    Fiber
+                  </div>
+
+                  <div className="mt-1 font-semibold">
+                    {selectedFood.fiber_g ?? "—"} g
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              {/* SERVING */}
+
+              {selectedFood.serving_size && (
+
+                <div className="mt-6 flex items-center gap-2 text-sm text-muted-foreground">
+
+                  <Utensils className="h-4 w-4" />
+
+                  Serving size:{" "}
+                  <span className="font-medium text-foreground">
+                    {selectedFood.serving_size}
+                  </span>
+
+                </div>
+
+              )}
+
+
+              {/* MICRONUTRIENTS */}
+
+              {selectedFood.micronutrients && (
+
+                <div className="mt-6">
+
+                  <h3 className="font-semibold">
+                    Micronutrients
+                  </h3>
+
+                  <p className="mt-2 leading-7 text-muted-foreground">
+                    {selectedFood.micronutrients}
+                  </p>
+
+                </div>
+
+              )}
+
+
+              {/* NOTE */}
+
+              {selectedFood.note && (
+
+                <div className="mt-6 rounded-xl bg-muted/60 p-4">
+
+                  <div className="mb-1 flex items-center gap-2 font-medium">
+
+                    <Sparkles className="h-4 w-4" />
+
+                    Deha Veda note
+
+                  </div>
+
+                  <p className="text-sm leading-6 text-muted-foreground">
+                    {selectedFood.note}
+                  </p>
+
+                </div>
+
+              )}
+
+            </div>
+
+          </div>
+
         </div>
-      </section>
-    </>
+
+      )}
+
+    </div>
   );
 }

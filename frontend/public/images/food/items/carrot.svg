@@ -1,0 +1,56 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Carrot"
+>
+<rect width="800" height="520" fill="#F0FDF4"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#BBF7D0"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#BBF7D0"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#16A34A"
+>
+VEGETABLE
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Carrot
+</text>
+
+<path d="M350 190 L450 190 L410 410 Q400 435 390 410 Z" fill="#F97316"/>
+<path d="M370 190 Q350 130 325 105" stroke="#16A34A" stroke-width="16" fill="none"/>
+<path d="M400 190 Q400 125 400 100" stroke="#22C55E" stroke-width="16" fill="none"/>
+<path d="M430 190 Q455 135 475 115" stroke="#16A34A" stroke-width="16" fill="none"/>
+</svg>

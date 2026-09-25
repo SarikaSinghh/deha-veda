@@ -1,0 +1,62 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Mango"
+>
+<rect width="800" height="520" fill="#FFF7ED"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#FED7AA"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#FED7AA"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#F97316"
+>
+FRUIT
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Mango
+</text>
+
+<ellipse
+cx="400"
+cy="280"
+rx="105"
+ry="135"
+transform="rotate(20 400 280)"
+fill="#F59E0B"
+/>
+<path d="M420 150 Q450 120 480 135" stroke="#713F12" stroke-width="10" fill="none"/>
+<path d="M455 140 Q510 100 545 145 Q495 165 455 160 Z" fill="#16A34A"/>
+</svg>

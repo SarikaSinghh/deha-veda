@@ -1,0 +1,56 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Orange"
+>
+<rect width="800" height="520" fill="#FFF7ED"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#FED7AA"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#FED7AA"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#F97316"
+>
+FRUIT
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Orange
+</text>
+
+<circle cx="400" cy="275" r="120" fill="#F97316"/>
+<circle cx="400" cy="275" r="88" fill="#FDBA74" opacity="0.8"/>
+<path d="M400 155 L400 395 M280 275 L520 275" stroke="#FB923C" stroke-width="7"/>
+<path d="M400 155 Q430 125 465 145" stroke="#713F12" stroke-width="10" fill="none"/>
+</svg>

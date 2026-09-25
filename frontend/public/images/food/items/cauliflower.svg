@@ -1,0 +1,58 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Cauliflower"
+>
+<rect width="800" height="520" fill="#F0FDF4"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#BBF7D0"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#BBF7D0"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#16A34A"
+>
+VEGETABLE
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Cauliflower
+</text>
+
+<path d="M355 310 L445 310 L430 410 L370 410 Z" fill="#65A30D"/>
+<circle cx="340" cy="270" r="55" fill="#F8FAFC"/>
+<circle cx="400" cy="235" r="65" fill="#FFFFFF"/>
+<circle cx="460" cy="270" r="55" fill="#F8FAFC"/>
+<circle cx="375" cy="285" r="48" fill="#FFFFFF"/>
+<circle cx="430" cy="290" r="48" fill="#FFFFFF"/>
+</svg>

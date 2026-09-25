@@ -1,0 +1,57 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Rohu Fish"
+>
+<rect width="800" height="520" fill="#FEF2F2"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#FECACA"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#FECACA"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#DC2626"
+>
+PROTEIN
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Rohu Fish
+</text>
+
+<ellipse cx="400" cy="285" rx="135" ry="75" fill="#60A5FA"/>
+<polygon points="525,285 610,220 610,350" fill="#3B82F6"/>
+<polygon points="330,225 280,175 315,260" fill="#93C5FD"/>
+<circle cx="345" cy="265" r="10" fill="#111827"/>
+<path d="M390 280 Q430 320 470 280" stroke="#1D4ED8" stroke-width="7" fill="none"/>
+</svg>

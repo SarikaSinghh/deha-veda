@@ -1,0 +1,56 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Green Tea (unsweetened)"
+>
+<rect width="800" height="520" fill="#ECFEFF"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#A5F3FC"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#A5F3FC"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#0891B2"
+>
+BEVERAGE
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Green Tea (unsweetened)
+</text>
+
+<path d="M325 220 L475 220 L455 390 L345 390 Z" fill="#F59E0B" opacity="0.8"/>
+<path d="M475 255 Q560 245 545 310 Q530 345 470 325" fill="none" stroke="#92400E" stroke-width="18"/>
+<path d="M350 190 Q335 145 360 120" stroke="#CBD5E1" stroke-width="12" fill="none" opacity="0.8"/>
+<path d="M410 190 Q395 145 420 120" stroke="#CBD5E1" stroke-width="12" fill="none" opacity="0.8"/>
+</svg>

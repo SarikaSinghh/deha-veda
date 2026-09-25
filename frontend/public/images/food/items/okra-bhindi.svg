@@ -1,0 +1,57 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Okra (Bhindi)"
+>
+<rect width="800" height="520" fill="#F0FDF4"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#BBF7D0"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#BBF7D0"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#16A34A"
+>
+VEGETABLE
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Okra (Bhindi)
+</text>
+
+<path d="M400 160 L455 230 L430 380 L370 380 L345 230 Z" fill="#22C55E"/>
+<path d="M400 160 L400 380" stroke="#166534" stroke-width="8"/>
+<path d="M350 225 L450 225" stroke="#166534" stroke-width="6"/>
+<path d="M360 270 L440 270" stroke="#166534" stroke-width="6"/>
+<path d="M370 315 L430 315" stroke="#166534" stroke-width="6"/>
+</svg>

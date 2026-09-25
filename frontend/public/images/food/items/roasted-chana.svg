@@ -1,0 +1,71 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Roasted Chana"
+>
+<rect width="800" height="520" fill="#F5F3FF"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#DDD6FE"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#DDD6FE"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#7C3AED"
+>
+SNACK
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Roasted Chana
+</text>
+
+<ellipse cx="400" cy="360" rx="190" ry="42" fill="#E5E7EB"/>
+<path
+d="M220 350 Q235 445 400 450 Q565 445 580 350 Z"
+fill="#7C3AED"
+opacity="0.18"
+/>
+<ellipse
+cx="400"
+cy="350"
+rx="180"
+ry="55"
+fill="#FFFFFF"
+stroke="#7C3AED"
+stroke-width="5"
+/>
+
+<circle cx="340" cy="310" r="42" fill="#F59E0B"/>
+<circle cx="400" cy="290" r="45" fill="#EAB308"/>
+<circle cx="465" cy="315" r="42" fill="#D97706"/>
+</svg>

@@ -1,0 +1,74 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Sprouts Salad"
+>
+<rect width="800" height="520" fill="#F5F3FF"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#DDD6FE"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#DDD6FE"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#7C3AED"
+>
+SNACK
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Sprouts Salad
+</text>
+
+<ellipse cx="400" cy="360" rx="190" ry="42" fill="#E5E7EB"/>
+<path
+d="M220 350 Q235 445 400 450 Q565 445 580 350 Z"
+fill="#7C3AED"
+opacity="0.18"
+/>
+<ellipse
+cx="400"
+cy="350"
+rx="180"
+ry="55"
+fill="#FFFFFF"
+stroke="#7C3AED"
+stroke-width="5"
+/>
+
+<path d="M400 345 L400 220" stroke="#166534" stroke-width="8"/>
+<path d="M400 255 Q350 215 330 235 Q350 275 400 275" fill="#22C55E"/>
+<path d="M400 285 Q450 245 470 265 Q450 305 400 305" fill="#16A34A"/>
+<circle cx="330" cy="340" r="25" fill="#EAB308"/>
+<circle cx="400" cy="355" r="25" fill="#FACC15"/>
+<circle cx="470" cy="340" r="25" fill="#EAB308"/>
+</svg>

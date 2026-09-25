@@ -1,0 +1,61 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Cashews"
+>
+<rect width="800" height="520" fill="#FFFBEB"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#F5D0A9"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#F5D0A9"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#92400E"
+>
+NUT
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Cashews
+</text>
+
+<path
+d="M470 230
+C400 165 300 185 310 275
+C320 350 390 360 425 315
+C385 335 350 305 350 265
+C350 225 400 215 430 250
+C445 270 455 275 470 270 Z"
+fill="#F59E0B"
+/>
+</svg>

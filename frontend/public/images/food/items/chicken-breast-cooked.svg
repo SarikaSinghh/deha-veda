@@ -1,0 +1,64 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Chicken Breast (cooked)"
+>
+<rect width="800" height="520" fill="#FEF2F2"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#FECACA"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#FECACA"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#DC2626"
+>
+PROTEIN
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Chicken Breast (cooked)
+</text>
+
+<path
+d="M350 200
+C300 220 300 290 345 315
+L380 380
+Q400 410 420 380
+L455 315
+C500 290 500 220 450 200
+Q400 170 350 200 Z"
+fill="#F5D0A9"
+/>
+<circle cx="365" cy="250" r="9" fill="#92400E"/>
+<path d="M420 220 Q460 200 480 230" stroke="#92400E" stroke-width="10" fill="none"/>
+</svg>

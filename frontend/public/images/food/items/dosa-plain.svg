@@ -1,0 +1,55 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Dosa (plain)"
+>
+<rect width="800" height="520" fill="#FFF7ED"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#FDBA74"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#FDBA74"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#C2410C"
+>
+TRADITIONAL
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Dosa (plain)
+</text>
+
+<ellipse cx="400" cy="300" rx="190" ry="85" fill="#EAB308"/>
+<ellipse cx="400" cy="300" rx="150" ry="55" fill="#FDE68A"/>
+<path d="M270 300 Q400 220 530 300" stroke="#CA8A04" stroke-width="9" fill="none"/>
+</svg>

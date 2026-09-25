@@ -1,0 +1,55 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Cow Milk (Whole)"
+>
+<rect width="800" height="520" fill="#EFF6FF"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#BFDBFE"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#BFDBFE"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#2563EB"
+>
+DAIRY
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Cow Milk (Whole)
+</text>
+
+<path d="M330 190 L470 190 L450 390 L350 390 Z" fill="#FFFFFF" stroke="#2563EB" stroke-width="7"/>
+<path d="M330 190 Q400 160 470 190" fill="#DBEAFE" stroke="#2563EB" stroke-width="7"/>
+<path d="M350 300 L450 300" stroke="#BFDBFE" stroke-width="12"/>
+</svg>

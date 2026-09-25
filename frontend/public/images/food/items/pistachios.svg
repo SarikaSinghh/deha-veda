@@ -1,0 +1,55 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Pistachios"
+>
+<rect width="800" height="520" fill="#FFFBEB"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#F5D0A9"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#F5D0A9"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#92400E"
+>
+NUT
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Pistachios
+</text>
+
+<path d="M320 330 Q300 230 400 190 Q500 230 480 330 Q400 390 320 330 Z"
+fill="#A16207"/>
+<path d="M345 315 Q400 230 455 315" stroke="#FDE68A" stroke-width="8" fill="none"/>
+</svg>

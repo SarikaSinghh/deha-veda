@@ -1,0 +1,54 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Egg (Whole, boiled)"
+>
+<rect width="800" height="520" fill="#FEF2F2"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#FECACA"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#FECACA"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#DC2626"
+>
+PROTEIN
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Egg (Whole, boiled)
+</text>
+
+<ellipse cx="400" cy="285" rx="90" ry="120" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="7"/>
+<circle cx="400" cy="305" r="48" fill="#F59E0B"/>
+</svg>

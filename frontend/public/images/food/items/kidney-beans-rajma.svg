@@ -1,0 +1,67 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Kidney Beans (Rajma)"
+>
+<rect width="800" height="520" fill="#FFF7ED"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#FED7AA"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#FED7AA"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#B45309"
+>
+PULSE
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Kidney Beans (Rajma)
+</text>
+
+<ellipse cx="400" cy="360" rx="190" ry="42" fill="#E5E7EB"/>
+<path
+d="M220 350 Q235 445 400 450 Q565 445 580 350 Z"
+fill="#B45309"
+opacity="0.18"
+/>
+<ellipse
+cx="400"
+cy="350"
+rx="180"
+ry="55"
+fill="#FFFFFF"
+stroke="#B45309"
+stroke-width="5"
+/>
+<ellipse cx="315" cy="320" rx="30" ry="22" fill="#991B1B"/><ellipse cx="365" cy="300" rx="30" ry="22" fill="#991B1B"/><ellipse cx="415" cy="325" rx="30" ry="22" fill="#991B1B"/><ellipse cx="465" cy="300" rx="30" ry="22" fill="#991B1B"/><ellipse cx="345" cy="270" rx="30" ry="22" fill="#991B1B"/><ellipse cx="395" cy="255" rx="30" ry="22" fill="#991B1B"/><ellipse cx="445" cy="275" rx="30" ry="22" fill="#991B1B"/><ellipse cx="370" cy="345" rx="30" ry="22" fill="#991B1B"/><ellipse cx="430" cy="350" rx="30" ry="22" fill="#991B1B"/></svg>

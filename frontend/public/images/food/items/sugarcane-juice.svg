@@ -1,0 +1,55 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 800 520"
+width="800"
+height="520"
+role="img"
+aria-label="Sugarcane Juice"
+>
+<rect width="800" height="520" fill="#ECFEFF"/>
+
+<circle
+cx="680"
+cy="100"
+r="130"
+fill="#A5F3FC"
+opacity="0.35"
+/>
+
+<circle
+cx="120"
+cy="430"
+r="170"
+fill="#A5F3FC"
+opacity="0.22"
+/>
+
+<text
+x="400"
+y="62"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="18"
+font-weight="700"
+letter-spacing="4"
+fill="#0891B2"
+>
+BEVERAGE
+</text>
+
+<text
+x="400"
+y="480"
+text-anchor="middle"
+font-family="Arial, Helvetica, sans-serif"
+font-size="30"
+font-weight="700"
+fill="#1F2937"
+>
+Sugarcane Juice
+</text>
+
+<path d="M350 180 L450 180 L430 400 L370 400 Z" fill="#86EFAC" stroke="#166534" stroke-width="7"/>
+<path d="M365 230 L435 230 M360 280 L440 280 M355 330 L435 330"
+stroke="#166534" stroke-width="7"/>
+</svg>
