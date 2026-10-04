@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { AlertTriangle, Loader2, Lock, Inbox } from "lucide-react";
+import { AlertTriangle, Loader2, Inbox } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 
 export const Loading = ({ label = "Loading…", testid = "loading-state" }) => (
   <div data-testid={testid} className="flex items-center gap-3 py-14 text-slate-600">
@@ -26,24 +25,6 @@ export const EmptyState = ({ message, testid = "empty-state" }) => (
   <div data-testid={testid} className="dv-surface rounded-2xl p-10 text-center">
     <Inbox className="mx-auto mb-3 h-7 w-7 text-slate-500" />
     <p className="text-sm text-slate-600">{message}</p>
-  </div>
-);
-
-export const PremiumLock = ({ title, testid = "premium-lock" }) => (
-  <div
-    data-testid={testid}
-    className="dv-surface flex h-full flex-col justify-between rounded-2xl border-dashed p-6"
-  >
-    <div>
-      <Lock className="mb-3 h-5 w-5 text-amber-600" />
-      <p className="font-display text-xl text-slate-800">{title}</p>
-      <p className="mt-2 text-xs text-slate-500">Included in Premium membership.</p>
-    </div>
-    <Link to="/membership" className="mt-5">
-      <Button data-testid="unlock-premium-button" size="sm" className="w-full rounded-full bg-amber-600 text-white hover:bg-amber-700">
-        Unlock Premium
-      </Button>
-    </Link>
   </div>
 );
 

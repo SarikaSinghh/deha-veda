@@ -46,23 +46,11 @@ export const GALLERIES = {
     { url: "/images/ahara-spices.jpg", caption: "Spices carry flavour, not calories", alt: "Steel masala box filled with coloured ground spices" },
     { url: "/images/ahara-spoons.jpg", caption: "Portion size decides the number on the label", alt: "Four small steel spoons holding different condiments" },
   ],
-  swara: [
-    { url: "/images/swara-musician.jpg", caption: "A folk musician holding the drone", alt: "Seated musician playing a long-necked string instrument" },
-    { url: "/images/swara-tanpura.jpg", caption: "The tanpura shape, built for resonance", alt: "Silhouette of a tanpura hanging against a wall" },
-    { url: "/images/swara-turban.jpg", caption: "Swara is carried by voice and instrument alike", alt: "Musician in a turban holding a decorated string instrument" },
-  ],
   manas: [
     { url: "/images/manas-deck.jpg", caption: "Attention rests when the surroundings are quiet", alt: "Woman sitting cross-legged on a wooden deck at sunrise" },
     { url: "/images/manas-calm.jpg", caption: "Calm is a condition you set up, not force", alt: "Stone statue surrounded by green leaves with the word calm" },
     { url: "/images/manas-rock.jpg", caption: "Time outdoors helps attention recover", alt: "Person seated on a rock formation in daylight" },
     { url: "/images/manas-night.jpg", caption: "Breathing practice needs no equipment", alt: "Person meditating in a park in low light" },
-  ],
-  games: [
-    "/images/game-stopwatch.jpg",
-    "/images/game-cards.jpg",
-    "/images/game-dial.jpg",
-    "/images/game-grid.jpg",
-    "/images/game-chess.jpg",
   ],
 };
 
@@ -76,8 +64,7 @@ export const PILLARS = [
     blurb: "Learn about healthy foods, nutrients, calories and everyday nutrition.",
     path: "/ahara",
     accent: "#E07A5F",
-    image:
-      "/images/ahara-board.jpg",
+    image: "/images/ahara-board.jpg",
   },
   {
     code: "jala",
@@ -88,43 +75,17 @@ export const PILLARS = [
     blurb: "Understand drinking water, groundwater, minerals, contamination and quality.",
     path: "/jala",
     accent: "#38BDF8",
-    image:
-      "/images/jala-borewell.jpg",
-  },
-  {
-    code: "swara",
-    accentText: "#7E22CE",
-    index: "03",
-    name: "SWARA",
-    subtitle: "Sound & Swara",
-    blurb: "Explore sound, vibration, the seven swaras and their cultural background.",
-    path: "/swara",
-    accent: "#A855F7",
-    image:
-      "/images/swara-musician.jpg",
+    image: "/images/jala-borewell.jpg",
   },
   {
     code: "manas",
     accentText: "#047857",
-    index: "04",
+    index: "03",
     name: "MANAS",
     subtitle: "Mind",
     blurb: "Brain and mind, thoughts, attention, memory, emotion and calmer states.",
     path: "/manas",
     accent: "#10B981",
-    image:
-      "/images/pillar-manas.jpg",
-  },
-  {
-    code: "games",
-    accentText: "#4338CA",
-    index: "05",
-    name: "GAMES",
-    subtitle: "Mind Games",
-    blurb: "Play original memory, reaction, attention and pattern games.",
-    path: "/games",
-    accent: "#6366F1",
-    image:
-      "/images/pillar-games.jpg",
+    image: "/images/pillar-manas.jpg",
   },
 ];

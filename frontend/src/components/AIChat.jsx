@@ -5,14 +5,14 @@ import { API, TOKEN_KEY } from "@/lib/api";
 const SUGGESTIONS = [
   "How many calories are in an apple?",
   "What is groundwater?",
-  "What is Sa in Swara?",
   "How can I improve my focus?",
+  "What is the safe TDS level for drinking water?",
 ];
 
 const GREETING = {
   role: "assistant",
   text:
-    "Namaste. I am the Deha Veda AI Assistant. Ask me about food and nutrition, water and water quality, sound and swaras, the mind, or the games on this site. I share general educational information only — not medical advice.",
+    "Namaste. I am the Deha Veda AI Assistant. Ask me about food and nutrition, water and water quality, or the mind. I share general educational information only \u2014 not medical advice.",
 };
 
 export function AIChat() {
@@ -178,7 +178,7 @@ export function AIChat() {
               data-testid="ai-chat-input"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask about food, water, sound, mind…"
+              placeholder="Ask about food, water or mind…"
               className="flex-1 rounded-full border border-slate-300 bg-white px-4 py-2.5 text-[13px] text-slate-900 outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-emerald-400"
             />
             <button

@@ -31,7 +31,7 @@ export default function Auth({ mode }) {
     <>
       <Seo
         title={isLogin ? "Login" : "Create account"}
-        description="Access your Deha Veda Ecosystem membership, saved game scores and premium content."
+        description="Access your Deha Veda Ecosystem account and explore food, water and mind."
         path={isLogin ? "/login" : "/register"}
       />
       <section className="dv-aurora flex min-h-[80vh] items-center justify-center px-4 py-16">

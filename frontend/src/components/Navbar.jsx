@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Crown, LogOut, User as UserIcon, ShieldCheck } from "lucide-react";
+import { Menu, X, LogOut, User as UserIcon, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 
@@ -8,11 +8,8 @@ const LINKS = [
   { label: "Home", path: "/", testid: "nav-link-home" },
   { label: "Ahara", path: "/ahara", testid: "nav-link-ahara" },
   { label: "Jala", path: "/jala", testid: "nav-link-jala" },
-  { label: "Swara", path: "/swara", testid: "nav-link-swara" },
   { label: "Manas", path: "/manas", testid: "nav-link-manas" },
-  { label: "Games", path: "/games", testid: "nav-link-games" },
   { label: "Health Reports", path: "/health", testid: "nav-link-health" },
-  { label: "Membership", path: "/membership", testid: "nav-link-membership" },
   { label: "About", path: "/about", testid: "nav-link-about" },
   { label: "Contact", path: "/contact", testid: "nav-link-contact" },
 ];
@@ -95,14 +92,13 @@ export const Navbar = () => {
                   Login
                 </Button>
               </Link>
-              <Link to="/membership">
+              <Link to="/register">
                 <Button
-                  data-testid="nav-cta-membership"
+                  data-testid="nav-cta-register"
                   size="sm"
                   className="rounded-full bg-emerald-600 text-white hover:bg-emerald-700"
                 >
-                  <Crown className="mr-1.5 h-4 w-4" />
-                  <span className="hidden sm:inline">Subscribe</span>
+                  <span className="hidden sm:inline">Get started</span>
                   <span className="sm:hidden">Join</span>
                 </Button>
               </Link>

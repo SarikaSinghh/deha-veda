@@ -7,7 +7,7 @@ import { Seo } from "@/components/Seo";
 export default function About() {
   return (
     <>
-      <Seo title="About" description="Deha Veda Ecosystem brings food, water, sound, mind and cognitive games into one educational platform." path="/about" />
+      <Seo title="About" description="Deha Veda Ecosystem brings food, water and mind into one educational platform." path="/about" />
 
       <header className="dv-aurora border-b border-slate-200">
         <div className="mx-auto max-w-7xl px-4 py-16 lg:px-8 lg:py-20">
@@ -20,7 +20,7 @@ export default function About() {
 
       <section className="mx-auto max-w-3xl px-4 py-16 lg:px-8">
         <div className="mb-12 grid grid-cols-3 gap-3">
-          {[GALLERIES.ahara[0], GALLERIES.swara[0], GALLERIES.manas[0]].map((g) => (
+          {[GALLERIES.ahara[0], GALLERIES.manas[0], GALLERIES.manas[2]].map((g) => (
             <img
               key={g.url}
               src={g.url}
@@ -32,8 +32,8 @@ export default function About() {
         </div>
         <div className="space-y-6 text-sm leading-relaxed text-slate-700 sm:text-base">
           <p>
-            Deha Veda Ecosystem is an educational platform. It brings together five subjects that shape daily
-            wellbeing — food, water, sound, mind and cognitive training — and presents each one as something you
+            Deha Veda Ecosystem is an educational platform. It brings together three subjects that shape daily
+            wellbeing — food, water and mind — and presents each one as something you
             can read, try and measure rather than simply scroll past.
           </p>
           <p>
@@ -43,11 +43,6 @@ export default function About() {
             the WHO Guidelines for Drinking-water Quality and BIS IS 10500:2012.
           </p>
           <p>
-            Where a topic belongs to tradition rather than to measurement — as with the swaras of Indian classical
-            music — we say so plainly, and we separate cultural understanding from scientific evidence instead of
-            blending the two.
-          </p>
-          <p>
             Nothing on this site is medical advice, and nothing here diagnoses or treats any condition. The AI
             assistant follows the same rule and will point you towards a qualified professional for personal health
             questions.
@@ -55,8 +50,9 @@ export default function About() {
         </div>
 
         <div className="mt-14">
-          <SectionHeading eyebrow="The Ecosystem" title="Five pillars, one platform" />
-          <div className="mt-8 space-y-4">            {PILLARS.map((p, i) => (
+          <SectionHeading eyebrow="The Ecosystem" title="Three pillars, one platform" />
+          <div className="mt-8 space-y-4">
+            {PILLARS.map((p, i) => (
               <Reveal key={p.code} delay={i * 60}>
                 <Link
                   to={p.path}

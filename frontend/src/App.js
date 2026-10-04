@@ -11,10 +11,7 @@ import Home from "@/pages/Home";
 
 const Ahara = lazy(() => import("@/pages/Ahara"));
 const Jala = lazy(() => import("@/pages/Jala"));
-const Swara = lazy(() => import("@/pages/Swara"));
 const Manas = lazy(() => import("@/pages/Manas"));
-const Games = lazy(() => import("@/pages/Games"));
-const Membership = lazy(() => import("@/pages/Membership"));
 const About = lazy(() => import("@/pages/About"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const Auth = lazy(() => import("@/pages/Auth"));
@@ -45,10 +42,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/ahara" element={<Ahara />} />
                 <Route path="/jala" element={<Jala />} />
-                <Route path="/swara" element={<Swara />} />
                 <Route path="/manas" element={<Manas />} />
-                <Route path="/games" element={<Games />} />
-                <Route path="/membership" element={<Membership />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/login" element={<Auth mode="login" />} />
@@ -58,7 +52,6 @@ function App() {
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/privacy" element={<Legal doc="privacy" />} />
                 <Route path="/terms" element={<Legal doc="terms" />} />
-                <Route path="/subscription-policy" element={<Legal doc="subscription" />} />
                 <Route path="*" element={<Legal doc="notfound" />} />
               </Routes>
             </Suspense>

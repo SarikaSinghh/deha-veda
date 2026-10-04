@@ -7,9 +7,7 @@ const COLS = [
       ["Home", "/"],
       ["Ahara — Food", "/ahara"],
       ["Jala — Water", "/jala"],
-      ["Swara — Sound", "/swara"],
       ["Manas — Mind", "/manas"],
-      ["Games", "/games"],
     ],
   },
   {
@@ -17,7 +15,6 @@ const COLS = [
     links: [
       ["AI Assistant", "/#ai-assistant"],
       ["Health Reports", "/health"],
-      ["Membership", "/membership"],
       ["About", "/about"],
       ["Contact", "/contact"],
     ],
@@ -27,7 +24,6 @@ const COLS = [
     links: [
       ["Privacy Policy", "/privacy"],
       ["Terms of Use", "/terms"],
-      ["Subscription Policy", "/subscription-policy"],
     ],
   },
 ];
@@ -42,7 +38,7 @@ export const Footer = () => (
             Explore. Understand. Improve.
           </p>
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-slate-500">
-            An educational platform bringing food, water, sound, mind and cognitive training into one place.
+            An educational platform bringing food, water and mind into one interactive learning experience.
             Educational content only — not medical advice.
           </p>
         </div>

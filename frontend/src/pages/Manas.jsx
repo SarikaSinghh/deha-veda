@@ -21,7 +21,6 @@ import { AutoCarousel } from "@/components/AutoCarousel";
 import {
   ErrorState,
   Loading,
-  PremiumLock,
   SectionHeading,
   Reveal,
 } from "@/components/States";
@@ -225,16 +224,6 @@ export default function Manas() {
 
             <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {data.topics.map((topic, index) => {
-                if (topic.locked) {
-                  return (
-                    <PremiumLock
-                      key={topic.title}
-                      title={topic.title}
-                      testid={`manas-topic-locked-${index}`}
-                    />
-                  );
-                }
-
                 const Icon =
                   TOPIC_ICONS[index % TOPIC_ICONS.length];
 

@@ -76,23 +76,3 @@ def class_user():
 @pytest.fixture(scope="session")
 def session_user():
     return new_user()
-
-
-# Premium user created during iteration 1 UI testing (claim verified by admin).
-PREMIUM_EMAIL = "uitest_1788264136@dvtest.com"
-PREMIUM_PASSWORD = "UiTest@2026"
-
-
-@pytest.fixture(scope="session")
-def premium_client():
-    r = requests.post(f"{API}/auth/login",
-                      json={"email": PREMIUM_EMAIL, "password": PREMIUM_PASSWORD})
-    if r.status_code != 200:
-        pytest.skip(f"premium test user unavailable ({r.status_code})")
-    data = r.json()
-    if not data["user"].get("premium"):
-        pytest.skip("iteration-1 premium user is no longer premium")
-    s = requests.Session()
-    s.headers.update({"Content-Type": "application/json",
-                      "Authorization": f"Bearer {data['token']}"})
-    return s

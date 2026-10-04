@@ -435,20 +435,6 @@ export default function Ahara() {
                     </div>
 
 
-                    {/* PREMIUM */}
-
-                    {food.premium && (
-
-                      <div className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-background/90 px-3 py-1 text-xs font-medium shadow-sm backdrop-blur">
-
-                        <Sparkles className="h-3 w-3" />
-
-                        Premium
-
-                      </div>
-
-                    )}
-
                   </div>
 
 
@@ -461,14 +447,6 @@ export default function Ahara() {
                       <h3 className="font-semibold leading-tight">
                         {food.name}
                       </h3>
-
-                      {food.locked && (
-
-                        <span className="shrink-0 text-xs text-muted-foreground">
-                          Locked
-                        </span>
-
-                      )}
 
                     </div>
 
@@ -503,19 +481,15 @@ export default function Ahara() {
                     </div>
 
 
-                    {!food.locked && (
-
-                      <Button
-                        variant="ghost"
-                        className="mt-4 w-full"
-                        onClick={() =>
-                          setSelectedFood(food)
-                        }
-                      >
-                        View details
-                      </Button>
-
-                    )}
+                    <Button
+                      variant="ghost"
+                      className="mt-4 w-full"
+                      onClick={() =>
+                        setSelectedFood(food)
+                      }
+                    >
+                      View details
+                    </Button>
 
                   </div>
 

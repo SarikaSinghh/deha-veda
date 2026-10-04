@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid, PieChart, Pie, Cell, LineChart, Line,
+  BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid, LineChart, Line,
 } from "recharts";
-import { Check, X, Plus, RefreshCw } from "lucide-react";
+import { Plus, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -13,23 +13,20 @@ import { ErrorState, Loading, SectionHeading } from "@/components/States";
 import { Seo } from "@/components/Seo";
 
 const COLORS = ["#10B981", "#38BDF8", "#A855F7", "#F59E0B", "#6366F1"];
-const TABS = ["Overview", "Payments", "Users", "Plans", "Food Content", "Messages", "Access"];
+const TABS = ["Overview", "Users", "Food Content", "Messages"];
 
 export default function Admin() {
   const { user, checking } = useAuth();
   const navigate = useNavigate();
   const [tab, setTab] = useState("Overview");
   const [stats, setStats] = useState(null);
-  const [claims, setClaims] = useState([]);
   const [users, setUsers] = useState([]);
-  const [plans, setPlans] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [gating, setGating] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [newFood, setNewFood] = useState({
     name: "", category: "Fruits", calories: 0, protein_g: 0, carbs_g: 0, fat_g: 0, fiber_g: 0,
-    micronutrients: "", note: "", premium: false, serving_size: "100 g",
+    micronutrients: "", note: "", serving_size: "100 g",
   });
 
   useEffect(() => {
@@ -40,19 +37,13 @@ export default function Admin() {
     setLoading(true);
     setError("");
     try {
-      const [s, c, u, p, m, g] = await Promise.all([
+      const [s, u, m] = await Promise.all([
         api.get("/admin/stats"),
-        api.get("/admin/claims"),
         api.get("/admin/users"),
-        api.get("/plans"),
         api.get("/admin/contact"),
-        api.get("/admin/settings"),
       ]);
-      setGating(g.data.premium_gating_enabled);
       setStats(s.data);
-      setClaims(c.data.claims);
       setUsers(u.data.users);
-      setPlans(p.data.plans);
       setMessages(m.data.messages);
     } catch (err) {
       setError(apiError(err, "Admin data could not be loaded."));
@@ -65,40 +56,6 @@ export default function Admin() {
     if (user?.role === "admin") load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
-
-  const review = async (id, action) => {
-    try {
-      await api.post(`/admin/claims/${id}/${action}`);
-      toast.success(`Payment ${action === "verify" ? "verified — premium activated" : "rejected"}`);
-      load();
-    } catch (err) {
-      toast.error(apiError(err));
-    }
-  };
-
-  const saveGating = async (value) => {
-    try {
-      const { data } = await api.put("/admin/settings", { premium_gating_enabled: value });
-      setGating(data.premium_gating_enabled);
-      toast.success(
-        data.premium_gating_enabled
-          ? "Premium gating is ON — premium content now requires a subscription"
-          : "Premium gating is OFF — all content is free for everyone",
-      );
-    } catch (err) {
-      toast.error(apiError(err));
-    }
-  };
-
-  const savePlan = async (code, price) => {
-    try {
-      await api.put(`/admin/plans/${code}`, { price: Number(price) });
-      toast.success("Plan price updated");
-      load();
-    } catch (err) {
-      toast.error(apiError(err));
-    }
-  };
 
   const addFood = async (e) => {
     e.preventDefault();
@@ -158,11 +115,7 @@ export default function Admin() {
               <>
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                   <Metric label="Total users" value={stats.total_users} testid="admin-total-users" />
-                  <Metric label="Active subscribers" value={stats.active_subscribers} testid="admin-active-subs" />
-                  <Metric label="Expired subscriptions" value={stats.expired_subscriptions} testid="admin-expired-subs" />
                   <Metric label="New in 7 days" value={stats.new_registrations_7d} testid="admin-new-7d" />
-                  <Metric label="Revenue (verified)" value={`₹${stats.revenue}`} testid="admin-revenue" />
-                  <Metric label="Pending payments" value={stats.pending_claims} testid="admin-pending" />
                   <Metric label="AI messages" value={stats.ai_messages} testid="admin-ai-messages" />
                   <Metric label="Contact messages" value={stats.contact_messages} testid="admin-contact-count" />
                 </div>
@@ -177,48 +130,6 @@ export default function Admin() {
                         <Tooltip contentStyle={{ background: "#0f172a", border: "1px solid #1e293b", borderRadius: 12 }} />
                         <Line type="monotone" dataKey="users" stroke="#10B981" strokeWidth={2.5} dot={{ r: 3 }} />
                       </LineChart>
-                    </ResponsiveContainer>
-                  </Panel>
-
-                  <Panel title="Game activity" testid="chart-games">
-                    {stats.game_activity.length === 0 ? (
-                      <p className="py-16 text-center text-sm text-slate-500">No games played yet.</p>
-                    ) : (
-                      <ResponsiveContainer width="100%" height={240}>
-                        <BarChart data={stats.game_activity}>
-                          <CartesianGrid stroke="#1e293b" vertical={false} />
-                          <XAxis dataKey="game" stroke="#64748b" fontSize={11} />
-                          <YAxis stroke="#64748b" fontSize={11} allowDecimals={false} />
-                          <Tooltip contentStyle={{ background: "#0f172a", border: "1px solid #1e293b", borderRadius: 12 }} />
-                          <Bar dataKey="plays" radius={[6, 6, 0, 0]}>
-                            {stats.game_activity.map((_, i) => (
-                              <Cell key={i} fill={COLORS[i % COLORS.length]} />
-                            ))}
-                          </Bar>
-                        </BarChart>
-                      </ResponsiveContainer>
-                    )}
-                  </Panel>
-
-                  <Panel title="Member breakdown" testid="chart-members">
-                    <ResponsiveContainer width="100%" height={240}>
-                      <PieChart>
-                        <Pie
-                          data={[
-                            { name: "Premium", value: stats.active_subscribers },
-                            { name: "Free", value: Math.max(0, stats.total_users - stats.active_subscribers) },
-                          ]}
-                          dataKey="value"
-                          nameKey="name"
-                          innerRadius={55}
-                          outerRadius={90}
-                          paddingAngle={3}
-                        >
-                          <Cell fill="#F59E0B" />
-                          <Cell fill="#10B981" />
-                        </Pie>
-                        <Tooltip contentStyle={{ background: "#0f172a", border: "1px solid #1e293b", borderRadius: 12 }} />
-                      </PieChart>
                     </ResponsiveContainer>
                   </Panel>
 
@@ -240,64 +151,13 @@ export default function Admin() {
               </>
             )}
 
-            {tab === "Payments" && (
-              <Panel title="Manual payment verification" testid="admin-payments">
-                {claims.length === 0 ? (
-                  <p className="py-10 text-center text-sm text-slate-500">No payment submissions yet.</p>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs">
-                      <thead className="text-slate-500">
-                        <tr>
-                          {["User", "Plan", "Amount", "Reference", "Status", "Action"].map((h) => (
-                            <th key={h} className="pb-3 pr-4 font-medium uppercase tracking-wider">{h}</th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody className="text-slate-700">
-                        {claims.map((c) => (
-                          <tr key={c.id} data-testid={`claim-row-${c.id}`} className="border-t border-slate-200">
-                            <td className="py-3 pr-4">{c.user_email}</td>
-                            <td className="py-3 pr-4">{c.plan_name}</td>
-                            <td className="py-3 pr-4">₹{c.amount}</td>
-                            <td className="font-data py-3 pr-4">{c.reference}</td>
-                            <td className="py-3 pr-4">
-                              <span
-                                className={
-                                  c.status === "verified" ? "text-emerald-700" : c.status === "rejected" ? "text-red-600" : "text-amber-700"
-                                }
-                              >
-                                {c.status}
-                              </span>
-                            </td>
-                            <td className="py-3">
-                              {c.status === "pending" && (
-                                <div className="flex gap-2">
-                                  <Button data-testid={`verify-${c.id}`} size="sm" className="h-7 rounded-full bg-emerald-600 px-3 text-white" onClick={() => review(c.id, "verify")}>
-                                    <Check className="h-3 w-3" />
-                                  </Button>
-                                  <Button data-testid={`reject-${c.id}`} size="sm" variant="secondary" className="h-7 rounded-full px-3" onClick={() => review(c.id, "reject")}>
-                                    <X className="h-3 w-3" />
-                                  </Button>
-                                </div>
-                              )}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </Panel>
-            )}
-
             {tab === "Users" && (
               <Panel title={`Users (${users.length})`} testid="admin-users">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
                     <thead className="text-slate-500">
                       <tr>
-                        {["Name", "Email", "Role", "Premium", "Joined"].map((h) => (
+                        {["Name", "Email", "Role", "Joined"].map((h) => (
                           <th key={h} className="pb-3 pr-4 font-medium uppercase tracking-wider">{h}</th>
                         ))}
                       </tr>
@@ -308,7 +168,6 @@ export default function Admin() {
                           <td className="py-3 pr-4">{u.name}</td>
                           <td className="py-3 pr-4">{u.email}</td>
                           <td className="py-3 pr-4">{u.role}</td>
-                          <td className="py-3 pr-4">{u.premium ? "Yes" : "No"}</td>
                           <td className="py-3">{new Date(u.created_at).toLocaleDateString()}</td>
                         </tr>
                       ))}
@@ -316,42 +175,6 @@ export default function Admin() {
                   </table>
                 </div>
               </Panel>
-            )}
-
-            {tab === "Plans" && (
-              <div className="grid gap-5 lg:grid-cols-2">
-                {plans.map((p) => (
-                  <Panel key={p.code} title={p.name} testid={`admin-plan-${p.code}`}>
-                    <p className="text-xs text-slate-500">Code: {p.code} · {p.duration_days} days</p>
-                    <div className="mt-4 flex items-end gap-3">
-                      <label className="flex-1 text-xs text-slate-600">
-                        Price (₹)
-                        <Input
-                          data-testid={`plan-price-input-${p.code}`}
-                          type="number"
-                          defaultValue={p.price}
-                          onChange={(e) => {
-                            p.newPrice = e.target.value;
-                          }}
-                          className="mt-2 bg-white"
-                        />
-                      </label>
-                      <Button
-                        data-testid={`plan-save-${p.code}`}
-                        className="rounded-full bg-emerald-600 text-white"
-                        onClick={() => savePlan(p.code, p.newPrice ?? p.price)}
-                      >
-                        Save
-                      </Button>
-                    </div>
-                    <ul className="mt-5 space-y-1.5">
-                      {p.features.map((f) => (
-                        <li key={f} className="text-xs text-slate-600">• {f}</li>
-                      ))}
-                    </ul>
-                  </Panel>
-                ))}
-              </div>
             )}
 
             {tab === "Food Content" && (
@@ -390,46 +213,10 @@ export default function Admin() {
                       className="mt-2 bg-white"
                     />
                   </label>
-                  <label className="flex items-center gap-2 text-xs text-slate-600">
-                    <input
-                      data-testid="food-input-premium"
-                      type="checkbox"
-                      checked={newFood.premium}
-                      onChange={(e) => setNewFood((f) => ({ ...f, premium: e.target.checked }))}
-                    />
-                    Premium only
-                  </label>
                   <Button data-testid="food-add-submit" type="submit" className="rounded-full bg-emerald-600 text-white sm:col-span-3">
                     <Plus className="mr-1.5 h-4 w-4" /> Add food
                   </Button>
                 </form>
-              </Panel>
-            )}
-
-            {tab === "Access" && (
-              <Panel title="Content access control" testid="admin-access">
-                <p className="text-sm leading-relaxed text-slate-700">
-                  While this switch is <strong>off</strong>, every food entry, water parameter, swara, mind topic
-                  and game is free for all visitors. Turn it <strong>on</strong> once the platform has grown, and
-                  premium content will immediately require an active subscription. Nothing else needs to change.
-                </p>
-                <div className="mt-6 flex flex-wrap items-center gap-4">
-                  <span
-                    data-testid="gating-status"
-                    className={`font-data rounded-full px-4 py-2 text-xs uppercase tracking-wider ${
-                      gating ? "bg-amber-500/10 text-amber-700" : "bg-emerald-500/10 text-emerald-700"
-                    }`}
-                  >
-                    {gating ? "Premium gating ON — subscription required" : "Premium gating OFF — everything free"}
-                  </span>
-                  <Button
-                    data-testid="gating-toggle"
-                    onClick={() => saveGating(!gating)}
-                    className={`rounded-full ${gating ? "bg-emerald-600 text-white hover:bg-emerald-700" : "bg-amber-600 text-white hover:bg-amber-700"}`}
-                  >
-                    {gating ? "Unlock everything (turn gating off)" : "Turn gating on (require subscription)"}
-                  </Button>
-                </div>
               </Panel>
             )}
 
