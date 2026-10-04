@@ -19,6 +19,7 @@ import {
   apiError,
   GALLERIES,
   foodImage,
+  foodItemImage,
 } from "../lib/api";
 
 
@@ -28,13 +29,16 @@ import {
 
 function FoodImage({ name, category, imageUrl }) {
   const fallback = foodImage(category);
+  // Priority: per-food image → image_url from API → category fallback
+  const primary = foodItemImage(name) || imageUrl || fallback;
 
   return (
     <img
-      src={imageUrl || fallback}
+      src={primary}
       alt={`${name} — ${category}`}
       loading="lazy"
       onError={(e) => {
+        // If the per-food or API image fails, gracefully fall back to category image
         if (e.currentTarget.src !== fallback) {
           e.currentTarget.src = fallback;
         }

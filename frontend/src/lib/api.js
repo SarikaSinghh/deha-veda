@@ -38,6 +38,81 @@ export const FOOD_IMAGES = {
 
 export const foodImage = (category) => FOOD_IMAGES[category] || "/images/food/fruits.jpg";
 
+/**
+ * Per-food-item image map — keyed by exact food name as stored in the database.
+ * Paths resolve to files in /public/images/food/ (photos) or
+ * /public/images/food/items/ (SVG illustrations) where no photo is available.
+ */
+export const FOOD_ITEM_IMAGES = {
+  "Apple":                          "/images/food/apple.jpg",
+  "Banana":                         "/images/food/banana.jpg",
+  "Mango":                          "/images/food/mango.webp",
+  "Papaya":                         "/images/food/papaya.jpeg",
+  "Guava":                          "/images/food/guava.jpeg",
+  "Orange":                         "/images/food/orange.jpeg",
+  "Pomegranate":                    "/images/food/items/pomegranate.svg",
+  "Watermelon":                     "/images/food/watermelon.webp",
+  "Grapes":                         "/images/food/grapes.webp",
+  "Spinach":                        "/images/food/spinach.webp",
+  "Broccoli":                       "/images/food/broccoli.jpg",
+  "Carrot":                         "/images/food/carrot.webp",
+  "Tomato":                         "/images/food/tomato.jpg",
+  "Cauliflower":                    "/images/food/cauliflower.jpeg",
+  "Bottle Gourd":                   "/images/food/bottle-gourd.jpg",
+  "Okra (Bhindi)":                  "/images/food/okra-bhindi.jpeg",
+  "Sweet Potato":                   "/images/food/sweet-potato.webp",
+  "Beetroot":                       "/images/food/beetroot.jpg",
+  "Brown Rice":                     "/images/food/brown-rice.avif",
+  "White Rice":                     "/images/food/white_rice.jpeg",
+  "Whole Wheat Flour":              "/images/food/whole-wheat-flour.jpg",
+  "Oats":                           "/images/food/oats.jpg",
+  "Finger Millet (Ragi)":           "/images/food/finger-millet-ragi.jpg",
+  "Pearl Millet (Bajra)":           "/images/food/pearl-millet-bajra.webp",
+  "Quinoa":                         "/images/food/quinoa.jpeg",
+  "Red Lentils (Masoor Dal)":       "/images/food/red-lentils-masoor-dal.jpeg",
+  "Chickpeas (Chana)":              "/images/food/chickpeas-chana.jpg",
+  "Kidney Beans (Rajma)":           "/images/food/kidney-beans-rajma.jpg",
+  "Pigeon Pea (Toor Dal)":          "/images/food/pigeon-pea-toor-dal.jpeg",
+  "Green Gram (Moong)":             "/images/food/green-gram-moong.webp",
+  "Almonds":                        "/images/food/almonds.jpg",
+  "Walnuts":                        "/images/food/walnuts.webp",
+  "Cashews":                        "/images/food/cashews.webp",
+  "Peanuts":                        "/images/food/peanuts.webp",
+  "Pistachios":                     "/images/food/pistachios.jpg",
+  "Flax Seeds":                     "/images/food/flax-seeds.jpeg",
+  "Chia Seeds":                     "/images/food/chia-seeds.webp",
+  "Pumpkin Seeds":                  "/images/food/pumpkin-seeds.webp",
+  "Sesame Seeds":                   "/images/food/sesame-seeds.webp",
+  "Sunflower Seeds":                "/images/food/sunflower-seeds.webp",
+  "Cow Milk (Whole)":               "/images/food/cow-milk-whole.jpg",
+  "Curd / Yogurt (Plain)":          "/images/food/curd-yogurt-plain.jpeg",
+  "Paneer":                         "/images/food/paneer.webp",
+  "Buttermilk (Chaas)":             "/images/food/buttermilk-chaas.webp",
+  "Ghee":                           "/images/food/ghee.jpeg",
+  "Egg (Whole, boiled)":            "/images/food/egg-whole-boiled.jpeg",
+  "Chicken Breast (cooked)":        "/images/food/chicken-breast-cooked.jpg",
+  "Rohu Fish":                      "/images/food/rohu-fish.jpg",
+  "Tofu":                           "/images/food/tofu.jpeg",
+  "Soybean (boiled)":               "/images/food/soybean-boiled.jpg",
+  "Idli":                           "/images/food/idli.webp",
+  "Dosa (plain)":                   "/images/food/dosa-plain.jpg",
+  "Khichdi":                        "/images/food/khichdi.jpg",
+  "Poha":                           "/images/food/poha.jpeg",
+  "Upma":                           "/images/food/upma.webp",
+  "Roasted Chana":                  "/images/food/roasted-chana.jpg",
+  "Makhana (Fox Nut)":              "/images/food/makhana-fox-nut..jpeg",
+  "Sprouts Salad":                  "/images/food/sprouts-salad.jpg",
+  "Fruit Chaat":                    "/images/food/fruit-chaat.jpg",
+  "Coconut Water":                  "/images/food/coconut-water.jpg",
+  "Green Tea (unsweetened)":        "/images/food/green-tea-unsweetened.jpg",
+  "Lemon Water (no sugar)":         "/images/food/lemon-water-no-sugar.jpeg",
+  "Sugarcane Juice":                "/images/food/sugarcane-juice..avif",
+  "Masala Chai (with milk & sugar)": "/images/food/masalachaiwithmilksugar.jpeg",
+};
+
+/** Returns the per-food-item image path if one exists, otherwise undefined. */
+export const foodItemImage = (name) => FOOD_ITEM_IMAGES[name];
+
 export const GALLERIES = {
   ahara: [
     { url: "/images/ahara-board.jpg", caption: "Whole foods across every category", alt: "Wooden board with sliced fruits, vegetables and nuts" },
