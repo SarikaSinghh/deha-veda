@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  ArrowRight, Calculator, Droplets, Brain, Sparkles, Users,
+  ArrowRight, Calculator, Droplets, Brain, Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { api, apiError, PILLARS } from "@/lib/api";
@@ -112,12 +112,7 @@ export default function Home() {
                 className="h-[280px] w-full object-cover sm:h-[420px]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/55 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 rounded-2xl border border-white/60 bg-white/95 px-5 py-4 shadow-lg">
-                <p className="font-data text-[10px] uppercase tracking-[0.24em] text-emerald-700">Live community</p>
-                <p className="mt-1 text-sm text-slate-700">
-                  {stats ? `${stats.community_members.toLocaleString()} members` : "Loading community data…"}
-                </p>
-              </div>
+             
             </div>
           </div>
         </div>
@@ -202,9 +197,8 @@ export default function Home() {
         ) : (
           <div className="mt-12 grid gap-5 sm:grid-cols-2">
             {[
-              { label: "Community Members", key: "community_members", testid: "stat-community-members", icon: Users },
-              { label: "Foods Catalogued", key: "foods_catalogued", testid: "stat-foods", icon: Calculator },
-            ].map((s, i) => (
+  { label: "Foods Catalogued", key: "foods_catalogued", testid: "stat-foods", icon: Calculator },
+].map((s, i) => (
               <Reveal key={s.key} delay={i * 70}>
                 <div className="dv-surface rounded-2xl p-7">
                   <s.icon className="mb-5 h-5 w-5 text-emerald-600" />

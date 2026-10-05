@@ -9,7 +9,7 @@ const LINKS = [
   { label: "Ahara", path: "/ahara", testid: "nav-link-ahara" },
   { label: "Jala", path: "/jala", testid: "nav-link-jala" },
   { label: "Manas", path: "/manas", testid: "nav-link-manas" },
-  { label: "Health Reports", path: "/health", testid: "nav-link-health" },
+
   { label: "About", path: "/about", testid: "nav-link-about" },
   { label: "Contact", path: "/contact", testid: "nav-link-contact" },
 ];
@@ -99,7 +99,7 @@ export const Navbar = () => {
                   className="rounded-full bg-emerald-600 text-white hover:bg-emerald-700"
                 >
                   <span className="hidden sm:inline">Get started</span>
-                  <span className="sm:hidden">Join</span>
+                 
                 </Button>
               </Link>
             </>

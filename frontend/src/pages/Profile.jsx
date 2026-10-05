@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { LogOut, User, ShieldCheck, FileText } from "lucide-react";
+import { LogOut, User, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { Loading, SectionHeading } from "@/components/States";
@@ -41,11 +41,7 @@ export default function Profile() {
         <div className="mt-8 dv-surface rounded-2xl p-6">
           <p className="font-data mb-4 text-[10px] uppercase tracking-[0.2em] text-slate-500">Quick links</p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/health">
-              <Button size="sm" variant="secondary" className="rounded-full" data-testid="profile-health-link">
-                <FileText className="mr-1.5 h-3.5 w-3.5" /> Health Reports
-              </Button>
-            </Link>
+            
             {user.role === "admin" && (
               <Link to="/admin">
                 <Button size="sm" className="rounded-full bg-sky-600 text-white" data-testid="profile-admin-link">

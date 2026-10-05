@@ -18,7 +18,7 @@ const Auth = lazy(() => import("@/pages/Auth"));
 const Profile = lazy(() => import("@/pages/Profile"));
 const Admin = lazy(() => import("@/pages/Admin"));
 const Legal = lazy(() => import("@/pages/Legal"));
-const HealthReports = lazy(() => import("@/pages/HealthReports"));
+
 
 function RouteTracker() {
   const location = useLocation();
@@ -48,7 +48,7 @@ function App() {
                 <Route path="/login" element={<Auth mode="login" />} />
                 <Route path="/register" element={<Auth mode="register" />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/health" element={<HealthReports />} />
+               
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/privacy" element={<Legal doc="privacy" />} />
                 <Route path="/terms" element={<Legal doc="terms" />} />
