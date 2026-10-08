@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/context/AuthContext";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { AIChat } from "@/components/AIChat";
+
 import { Loading } from "@/components/States";
 import { api } from "@/lib/api";
 import Home from "@/pages/Home";
@@ -57,7 +57,7 @@ function App() {
             </Suspense>
           </main>
           <Footer />
-          <AIChat />
+         
           <Toaster position="top-center" />
         </div>
       </BrowserRouter>

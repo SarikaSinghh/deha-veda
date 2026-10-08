@@ -8,9 +8,9 @@ const DOCS = {
     title: "Privacy Policy",
     path: "/privacy",
     body: [
-      ["What we collect", "When you create an account we store your name, email address and a bcrypt hash of your password. We never store your password in readable form. If you use the AI assistant we store the messages of that conversation so the assistant can follow context."],
+      ["What we collect", "When you create an account we store your name, email address and a bcrypt hash of your password. We never store your password in readable form."],
       ["Cookies", "We set an httpOnly session cookie for authentication. We do not use advertising cookies."],
-      ["Sharing", "We do not sell personal data. Messages you send to the AI assistant are processed by our AI provider in order to generate a reply."],
+      ["Sharing", "We do not sell personal data."],
       ["Your choices", "You may request deletion of your account and associated data by writing to us through the contact page."],
     ],
   },

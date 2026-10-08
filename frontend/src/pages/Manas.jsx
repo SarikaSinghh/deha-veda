@@ -45,16 +45,18 @@ const TOPIC_ICONS = [
 
 
 const TOPIC_IMAGES = [
-  "/images/manas-calm.jpg",
-  "/images/manas-deck.jpg",
-  "/images/manas-night.jpg",
-  "/images/manas-rock.jpg",
-  "/images/manas-calm.jpg",
-  "/images/manas-deck.jpg",
-  "/images/manas-night.jpg",
-  "/images/manas-rock.jpg",
-  "/images/manas-calm.jpg",
-  "/images/manas-deck.jpg",
+  "/images/manas-what-is-mind.jpeg",
+  "/images/manas-brain-vs-mind.jpg",
+  "/images/manas-thoughts.webp",
+  "/images/manas-attention.jpg",
+  "/images/manas-memory.jpg",
+  "/images/manas-emotions.jpeg",
+  "/images/manas-perception.jpg",
+  "/images/manas-habits.jpg",
+  "/images/manas-stress.webp",
+  "/images/manas-relaxation.webp",
+  "/images/manas-sleep.jpeg",
+  "/images/manas-focus.webp",
 ];
 
 

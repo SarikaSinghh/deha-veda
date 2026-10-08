@@ -466,9 +466,7 @@ async def startup():
         "category"
     )
 
-    await db.chat_messages.create_index(
-        [("session_id", 1), ("created_at", 1)]
-    )
+   
 
     await db.page_views.create_index(
         "path"
@@ -1019,260 +1017,7 @@ async def manas():
     }
 
 
-# ============================================================
-# AI ASSISTANT
-# ============================================================
 
-SYSTEM_PROMPT = (
-    "You are the Deha Veda AI Assistant for the DEHA VEDA "
-    "ECOSYSTEM platform, which teaches three pillars: "
-    "AHARA (food and nutrition), JALA (water and water quality), "
-    "and MANAS (mind and brain).\n"
-    "Rules you must always follow:\n"
-    "1. Answer only questions related to these three pillars "
-    "or to using this website. If asked something unrelated, "
-    "politely redirect to the three pillars.\n"
-    "2. You are NOT a doctor, dietitian or therapist and must "
-    "never present yourself as one. Never diagnose, never "
-    "prescribe, never claim any food, water, or mental exercise "
-    "cures a disease.\n"
-    "3. Give general educational information, give approximate "
-    "numbers with the serving size they refer to, and say when "
-    "values vary.\n"
-    "4. For any personal medical, nutritional or mental-health "
-    "concern, recommend consulting a qualified professional.\n"
-    "5. Keep answers concise: 2 to 5 short paragraphs or a "
-    "compact list. Plain text, no markdown headings."
-)
-
-
-@api.get("/chat/history")
-async def chat_history(
-    session_id: str,
-    user: Optional[dict] = Depends(
-        get_optional_user
-    )
-):
-
-    query = {
-        "session_id": session_id
-    }
-
-    if user:
-
-        query["user_id"] = user["id"]
-
-    docs = await db.chat_messages.find(
-        query,
-        NO_ID
-    ).sort(
-        "created_at",
-        1
-    ).to_list(100)
-
-    return {
-        "messages": docs
-    }
-
-
-@api.post("/chat")
-async def chat(
-    body: ChatIn,
-    request: Request,
-    user: Optional[dict] = Depends(
-        get_optional_user
-    )
-):
-
-    session_id = (
-        body.session_id
-        or str(uuid.uuid4())
-    )
-
-    ip = request.client.host
-
-    rate_limit(
-        f"chat:{ip}",
-        30,
-        300
-    )
-
-    if user:
-
-        since = iso(
-            now() - timedelta(days=1)
-        )
-
-        used = await db.chat_messages.count_documents(
-            {
-                "user_id": user["id"],
-                "role": "user",
-                "created_at": {
-                    "$gte": since
-                },
-            }
-        )
-
-        if used >= FREE_CHAT_LIMIT:
-
-            raise HTTPException(
-                status_code=403,
-                detail=(
-                    f"Daily message limit reached "
-                    f"({FREE_CHAT_LIMIT}). Please try again tomorrow."
-                ),
-            )
-
-    api_key = os.environ.get(
-        "EMERGENT_LLM_KEY"
-    )
-
-    if not api_key:
-
-        raise HTTPException(
-            status_code=503,
-            detail=(
-                "AI assistant is not configured on the server."
-            )
-        )
-
-    prior = await db.chat_messages.find(
-        {
-            "session_id": session_id
-        },
-        NO_ID
-    ).sort(
-        "created_at",
-        1
-    ).to_list(20)
-
-    await db.chat_messages.insert_one(
-        {
-            "id": str(uuid.uuid4()),
-            "session_id": session_id,
-            "user_id": (
-                user["id"]
-                if user
-                else None
-            ),
-            "role": "user",
-            "text": body.message,
-            "created_at": iso(now()),
-        }
-    )
-
-    from emergentintegrations.llm.chat import (
-        LlmChat,
-        UserMessage,
-        TextDelta,
-        StreamDone,
-    )
-
-    history_text = "\n".join(
-        f"{m['role']}: {m['text']}"
-        for m in prior[-8:]
-    )
-
-    chat_client = (
-        LlmChat(
-            api_key=api_key,
-            session_id=session_id,
-            system_message=(
-                SYSTEM_PROMPT
-                + (
-                    f"\n\nRecent conversation:\n{history_text}"
-                    if history_text
-                    else ""
-                )
-            ),
-        )
-        .with_model(
-            "openai",
-            "gpt-5.5"
-        )
-    )
-
-    async def generator():
-
-        collected = []
-
-        try:
-
-            async for event in chat_client.stream_message(
-                UserMessage(
-                    text=body.message
-                )
-            ):
-
-                if isinstance(
-                    event,
-                    TextDelta
-                ):
-
-                    collected.append(
-                        event.content
-                    )
-
-                    yield (
-                        f"data: "
-                        f"{json.dumps({'delta': event.content})}"
-                        "\n\n"
-                    )
-
-                elif isinstance(
-                    event,
-                    StreamDone
-                ):
-
-                    break
-
-        except Exception as exc:
-
-            logger.exception(
-                "AI stream failed"
-            )
-
-            yield (
-                f"data: "
-                f"{json.dumps({'error': 'The assistant could not respond right now.'})}"
-                "\n\n"
-            )
-
-            _ = exc
-
-        answer = "".join(collected)
-
-        if answer:
-
-            await db.chat_messages.insert_one(
-                {
-                    "id": str(uuid.uuid4()),
-                    "session_id": session_id,
-                    "user_id": (
-                        user["id"]
-                        if user
-                        else None
-                    ),
-                    "role": "assistant",
-                    "text": answer,
-                    "created_at": iso(now()),
-                }
-            )
-
-        yield (
-            f"data: "
-            f"{json.dumps({'done': True, 'session_id': session_id})}"
-            "\n\n"
-        )
-
-    return StreamingResponse(
-        generator(),
-        media_type="text/event-stream",
-        headers={
-            "Cache-Control": "no-cache",
-            "X-Accel-Buffering": "no"
-        }
-    )
 
 
 # ============================================================
@@ -1423,11 +1168,7 @@ async def admin_stats(
         -1
     ).to_list(12)
 
-    ai_messages = await db.chat_messages.count_documents(
-        {
-            "role": "user"
-        }
-    )
+   
 
     return {
         "total_users": total_users,
@@ -1435,7 +1176,7 @@ async def admin_stats(
         "contact_messages": (
             await db.contact_messages.count_documents({})
         ),
-        "ai_messages": ai_messages,
+       
         "registrations_7d": registrations,
         "popular_pages": pages,
     }
